@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h1>Opret nyt indlæg</h1>
+<form method="post" id="" action="">
+  <label>Title</label>
+  <input type="textbox" id="title" name="title" value="{{form.title.value}}"/>
+  {% if form.title.errors %}
+  	<ul>
+  		{% for e in form.title.errors %}
+  		<li>{{e}}</li>
+  		{% endfor %}
+  	</ul>
+  {% endif %}
+  
+  <label>Publiseret</label>
+  <input id="is_published" type="checkbox" checked="{{form.is_pusblished.value}}"/>
+  
+  <label>Tekst</label>
+  <textarea name="body" cols="70" rows="5">{{form.body.value}}</textarea>
+  {% if form.body.errors %}
+  	<ul>
+  		{% for e in form.body.errors %}
+  		<li>{{e}}</li>
+  		{% endfor %}
+  	</ul>
+  {% endif %}
+
+  <input type="submit" value="Gem" />
+
+</form>
+{% endblock %}

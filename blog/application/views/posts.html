@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Seneste Indlæg{% endblock %}
+
+{% block body %}
+<h1>Seneste Blog Indlæg</h1>
+<article>
+{% for post in posts %}
+    <section>
+        <h2>{{ post.title }}</h2>
+        <div class="blog-meta">
+          Skrevet af: d. {{ post.publish|date("d-m-Y") }}
+        </div>
+        <div>{{post.body}}</div>
+    </section> 
+{% endfor %}      
+</article>
+{% endblock %}
+

@@ -3,11 +3,11 @@
 {% block head_title %}{{ post.title }}{% endblock %}
 
 {% block body %}
-    <div class="post">
+    <article>
         <h1>{{ post.title }}</h1>
         <div class="blog-meta"><p>Skrevet af: den {{ post.publish|date }}</p></div>
         <div>{{post.body}}</div> 
-    </div>
+    </article>
     
     <h3>Kommentarer:</h3>
 {% endblock %}
