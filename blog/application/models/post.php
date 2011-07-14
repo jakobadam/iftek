@@ -1,5 +1,7 @@
 <?php
 
+include_once("model.php");
+
 class Post extends Model{
     
     var $body;

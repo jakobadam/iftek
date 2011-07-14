@@ -10,6 +10,5 @@ class Model{
     var $id;
     var $created_at;
     var $updated_at;
-
 }
 ?>
