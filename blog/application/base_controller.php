@@ -6,6 +6,30 @@ Twig_Autoloader::register();
 
 session_start();
 
+function flash($msg, $type='messages'){
+	if(!array_key_exists($type, $_SESSION)){
+		$_SESSION[$type] = array();
+	}
+	array_push($_SESSION[$type], $msg);
+}
+
+function flash_error($msg){
+	flash($msg, 'errors');
+}
+
+function get_flashes($type='messages'){
+	if(array_key_exists($type, $_SESSION)){
+		$flashes = $_SESSION[$type]; 
+		$_SESSION[$type] = array();
+		return $flashes;
+	}
+	return NULL;	
+}
+
+function get_error_flashes(){
+	return get_flashes('errors');
+}
+
 /**
  * Tilføjer værdier til konteksten - der sendes med når html renderes - 
  * som vi har brug for hver gang.
@@ -16,18 +40,8 @@ function populate_context($context){
 	 	$user = array(email=>'foo@example.com');
 	 	$context['user'] = $user;
 	}
-	if(array_key_exists('message', $_GET)){
-		if(!array_key_exists('messages', $context)){
-			$context['messages'] = array();
-		}
-		array_push($context['messages'], urldecode($_GET['message']));
-	}
-	if(array_key_exists('error', $_GET)){
-		if(!array_key_exists('errors', $context)){
-			$context['errors'] = array();
-		}
-		array_push($context['errors'], urldecode($_GET['error']));
-	}
+	$context['messages'] = get_flashes();
+	$context['errors'] = get_error_flashes();
 	return $context;
 }
 
@@ -37,7 +51,8 @@ function populate_context($context){
 function login_required(){
 	if(!array_key_exists('email', $_SESSION)){
 		// TODO: redirect to where the user is coming from.
-	 	echo(render('login_form.html', array(errors=>array('Hey, du skal være logget ind!'))));
+		flash_error('Hey, du skal være logget ind!');
+	 	echo(render('login_form.html'));
 	 	die();
 	}	
 }

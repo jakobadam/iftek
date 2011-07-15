@@ -14,8 +14,8 @@ if($form->validate_on_submit()){
 	// $db->add($post);
 	// $db->save();
 	// FIXME: include a message here
-	$message = urlencode('Sejt, nyt indlæg oprettet!');
-	header('Location: /posts.php?message=' . $message);
+	flash('Sejt, nyt indlæg oprettet!');
+	header('Location: /posts.php');
 	die();	
 }
 
