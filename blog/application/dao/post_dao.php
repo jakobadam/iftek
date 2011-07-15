@@ -10,12 +10,56 @@ include_once ("models/post.php");
 class Post_DAO extends Abstract_DAO {
     
     /**
+     * Opret et nyt blog indlæg
+     * @param type $title Titlen på det nye blogindlæg
+     * @param type $body Blog indlægets indhold / tekst
+     * @param type $is_published True hvis indlæget skal være synligt og false hvis skjult
+     * @param type $user_id ID'et på den bruger, der opretter indlæget
+     */
+    function add_post($title, $body, $is_published, $user_id) {
+        
+        // Insæt nyt indlæg
+        $result = parent::query("INSERT INTO posts Values(" . CURDATE() . ", " . CURDATE() . ",'" . $title . "','" . $body . "'," . $is_published . "," . $user_id . ")");
+        
+        // Vis fejl hvis indlæg ikke kunne oprettes
+        if (!$result) {
+            die('Blog post kunne ikke oprettes: ' . mysql_error());
+        }
+    }
+    
+    /**
+     * Opdater et allerede eksisterende post objekt
+     * @param type $post Post objekt der skal opdateres
+     */
+    function update_post($post) {
+        
+        // Opdater post ud fra det opdateret post objekt
+        $result = parent::query("UPDATE posts 
+            SET title='" . $post->title . "', 
+            body='" . $post->body . "', 
+            is_published=" . $post->is_published . ", 
+            user_id=" . $post->user_id . ",
+            updated_at=" . CURDATE() . " 
+            WHERE id = " . $post->id);
+        
+        // Vis fejl hvis blog indlæg ikke kunne hentes
+        if (!$result) {
+            die('Blog indlæg kunne ikke opdateres: ' . mysql_error());
+        }
+    }
+    
+    /**
      * Hent en liste med alle blog posts i databasen
      * 
      * @return array Alle posts i databasen
      */
     function get_all_posts() {
         $result = parent::query("SELECT * FROM posts");
+        
+        // Vis fejl hvis blog indlæg ikke kunne hentes
+        if (!$result) {
+            die('Blog indlæg kunne ikke hentes: ' . mysql_error());
+        }
         
         $posts = array();
 
@@ -38,6 +82,11 @@ class Post_DAO extends Abstract_DAO {
      */
     function get_post_by_id($id) {
         $result = parent::query("SELECT * FROM posts WHERE id = " . $id . " LIMIT 1");
+        
+        // Vis fejl hvis blog indlæg ikke kunne hentes
+        if (!$result) {
+            die('Blog indlæg kunne ikke hentes: ' . mysql_error());
+        }
         
         // Hent resultat
         $row = mysql_fetch_row($result);

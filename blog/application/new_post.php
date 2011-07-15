@@ -11,8 +11,8 @@ if($form->validate_on_submit()){
 	$post = new Post();
 	$form->populate_obj($post);
 	
-	// $db->session->add($post);
-	// $db->session->save();
+	// $db->add($post);
+	// $db->save();
 	// FIXME: include a message here
 	
 	header('Location: /posts.php');
