@@ -37,7 +37,7 @@ class Field{
 	
 	function process($data){
 		# FIXME: Error when not present?
-		$this->data = $data[$this->name];
+		$this->data = $data[$this->name];					
 	}
 	
 	function validate(){
@@ -53,11 +53,8 @@ class Field{
 	}
 	
 	function populate_obj($obj){
-		print('obj:');
-		// FIXME: assign that value 
-		// Using this as I can't access any docs now
-
-		// $obj[$this->name] = $this->data;
+		$name = $this->name;
+		$obj->$name = $this->data;
 	}
 }
 
