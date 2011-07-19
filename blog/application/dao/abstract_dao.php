@@ -11,25 +11,16 @@ include("models/user.php");
  * benytte fra PHP.
  */
 class Abstract_DAO {
-    
-   private $conf;
-    
-   /**
-    * Initialiser konfiguration indeholdende database oplysninger
-    */
-   function __construct() {
-        $this->conf = new Conf();
-   }
    
    /**
     * Åben en forbindelse til databasen.
     * 
     * @return type Link til databasen
     */
-   function open_connection() {
+   static function open_connection() {
        
        // Opret forbindelse til database-serveren
-       $link = mysql_connect($this->conf->db_url, $this->conf->db_user, $this->conf->db_pwd);
+       $link = mysql_connect(Conf::$db_url, Conf::$db_user, Conf::$db_pwd);
       
        // Overvej dette kald i stedet, så genbruges connections
        //mysql_pconnect()
@@ -40,7 +31,7 @@ class Abstract_DAO {
        }
        
        // Vælg blog databasen som standard database
-       $db = mysql_select_db($this->conf->db_name, $link);
+       $db = mysql_select_db(Conf::$db_name, $link);
         
        // Hvis det mislykkedes giv brugeren en fejl
        if (!$db) {
@@ -53,7 +44,7 @@ class Abstract_DAO {
     /**
      * Luk forbindelsen til databasen
      */
-    function close_connection($connection) {
+    static function close_connection($connection) {
         mysql_close($connection);
     }
      
@@ -63,10 +54,10 @@ class Abstract_DAO {
      * @param string $query Forspørgsel til databasen
      * @return type Resultat fra MySQL
      */
-    function query($query) {
+    static function query($query) {
         
         // Åben forbindelse til databasen hvis der ikke allerede findes en
-        $this->open_connection();
+        self::open_connection();
         
         // Udfør forspørgsel på databasen
         $result = mysql_query($query);
