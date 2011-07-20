@@ -4,7 +4,7 @@
 <h1>Opret nyt indlæg</h1>
 <form method="post" id="" action="">
   <label>Title</label>
-  <input type="textbox" id="title" name="title" value="{{form.title.value}}"/>
+  <input type="textbox" id="title" name="title" value="{{form.title.data}}"/>
   {% if form.title.errors %}
   	<ul>
   		{% for e in form.title.errors %}
@@ -14,10 +14,10 @@
   {% endif %}
   
   <label>Publiseret</label>
-  <input id="is_published" type="checkbox" checked="{{form.is_pusblished.value}}"/>
+  <input id="is_published" type="checkbox" checked="{{form.is_pusblished.data}}"/>
   
   <label>Tekst</label>
-  <textarea name="body" cols="70" rows="5">{{form.body.value}}</textarea>
+  <textarea name="body" cols="70" rows="5">{{form.body.data}}</textarea>
   {% if form.body.errors %}
   	<ul>
   		{% for e in form.body.errors %}
