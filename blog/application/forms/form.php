@@ -52,6 +52,19 @@ class Field{
 		return count($this->errors) == 0;
 	}
 	
+	function errors_as_html(){
+		if(count($this->errors) > 0){
+			$html = array();
+			array_push($html, '<ul>');
+			foreach($this->errors as $err){
+				array_push($html, "<li>$err</li>");
+			}
+			array_push($html, '</ul>');
+			return join('', $html);
+		}
+		return '';
+	}
+	
 	function populate_obj($obj){
 		$name = $this->name;
 		$obj->$name = $this->data;
