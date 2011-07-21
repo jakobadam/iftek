@@ -16,6 +16,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		die();
 	}
 	$_SESSION['email'] = $user->email;
+	flash('Velkommen tilbage!');
 	header('Location: /');
 	die();
 }
