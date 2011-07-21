@@ -6,10 +6,12 @@
 <h1>Login</h1>
 <form method="post" id="" action="/login.php">
   <label>Email</label>
-  <input type="textbox" id="email" name="email" />
+  <input type="textbox" id="email" name="email" value="{{form.email.data}}" />
+  {{form.email.errors_as_html|raw}}
   
   <label>Kodeord</label>
   <input id="password" type="password" />
+  {{form.password.errors_as_html|raw}}
   
   <input type="submit" value="Login" />
 
