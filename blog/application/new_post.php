@@ -1,8 +1,8 @@
 <?php
 
-include("base_controller.php");
-include("forms/post_form.php");
-include("models/post.php");
+include_once("base_controller.php");
+include_once("forms/post_form.php");
+include_once("models/post.php");
 
 login_required();
 $form = new PostForm($_POST);
