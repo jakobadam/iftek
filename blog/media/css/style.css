@@ -1,24 +1,12 @@
 body {
-  /*background: #00669C;*/
   background: #FFFFFF;
-  color: #ccc;
-  font: 14px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+  color: #aaa;
+  font: 14px/1.5 Arial, Helvetica, sans-serif;
   margin: 0;
 }
 
-/*@font-face {
-    font-family: 'Gravur';
-    src: url('fonts/gravur.eot');
-    src: url('fonts/gravur.eot?iefix') format('eot'),
-         url('fonts/gravur.woff') format('woff'),
-         url('fonts/gravur.ttf') format('truetype'),
-         url('fonts/gravur.svg#webfontaNmzQgrv') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}*/
-
 @font-face {
-    font-family: 'Gravur';
+    font-family: 'Goudy';
     src: url('fonts/goudy.otf');
 }
 
@@ -43,11 +31,12 @@ header{
   -ms-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   color: #CCC;
+  background-color:#FFFFFF;
   font-size: 12px;
 }
 
 h1,h2,h3 {
-  font-family: 'Gravur', sans-serif;
+  font-family: 'Goudy', sans-serif;
   font-size: 50px;
   line-height: 1;
   margin:0;
@@ -59,13 +48,6 @@ h2 {
 h3{
     font-size:30px;
 }
-
-.logo{
-  letter-spacing: 2px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  font-size: 70px;
-    
-} 
 
 ul, li, p{
 	margin:0;
@@ -119,17 +101,23 @@ footer {
   padding: 20px 40px;
 }
 
-
 input,textarea{
     display:block;
 }
 
+.logo{
+  letter-spacing: 2px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  font-size: 70px;  
+} 
 .content{
-    margin-top:135px;
+    margin-top:110px;
 	padding:0 40px 0 40px;
 }
 
 .error{
+    color: #555;
+    font-weight:bold;
 	background-color: #FDD;
 }
 .message{

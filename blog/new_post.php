@@ -11,9 +11,9 @@ if($form->validate_on_submit()){
 	$post = new Post();
 	$form->populate_obj($post);
 	
+    // FIXME: db
 	// $db->add($post);
 	// $db->save();
-	// FIXME: include a message here
 	flash('Sejt, nyt indlæg oprettet!');
 	header('Location: ' . url_root() . 'posts.php');
 	die();	
