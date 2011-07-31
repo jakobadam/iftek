@@ -19,6 +19,6 @@ $posts = array(
         'created_at'=>'0000-00-00'
     )));
 
-echo(render("posts.html", array(posts=>$posts)));
+echo(render("posts.html", array('posts'=>$posts)));
 
 ?>
