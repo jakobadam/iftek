@@ -19,7 +19,7 @@ class Post_DAO extends Abstract_DAO {
     static function add_post($title, $body, $is_published, $user_id) {
         
         // Insæt nyt indlæg
-        $result = parent::query("INSERT INTO posts Values('', " . date('Y-m-d') . ", " . date('Y-m-d') . ",'" . $title . "','" . $body . "'," . $is_published . "," . $user_id . ")");
+        $result = parent::query("INSERT INTO posts Values('', NOW(), NOW(), '" . $title . "','" . $body . "'," . $is_published . "," . $user_id . ")");
         
         // Vis fejl hvis indlæg ikke kunne oprettes
         if (!$result) {
@@ -39,7 +39,7 @@ class Post_DAO extends Abstract_DAO {
             body='" . $post->body . "', 
             is_published=" . $post->is_published . ", 
             user_id=" . $post->user_id . ",
-            updated_at=" . CURDATE() . " 
+            updated_at=NOW() 
             WHERE id = " . $post->id);
         
         // Vis fejl hvis blog indlæg ikke kunne hentes

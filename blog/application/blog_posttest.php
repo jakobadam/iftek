@@ -13,8 +13,6 @@ and open the template in the editor.
             
             include("dao/post_dao.php");
             
-            
-            
             $posts = Post_DAO::get_all_posts();
             
             if (count($posts) == 0) {
@@ -22,12 +20,24 @@ and open the template in the editor.
                 $posts = Post_DAO::get_all_posts();
             }
             
-            for ($i = 1; $i <= 10; $i++) {
-                echo $i;
-            }
+            // Print alle posts
             foreach ($posts as $post) {   
-                echo "Value: " . $post->title . "<br />\n";   
+                echo $post->title . "<br />\n" . $post->created_at . "<br />\n" . $post->body . "<br />\n<br />\n";
             }
+            
+            // Ret alle posts
+            /*
+            foreach ($posts as $post) {
+                $post->title = $post->title . "1";
+                Post_DAO::update_post($post);
+            }
+            
+            // Print alle posts igen
+            $posts = Post_DAO::get_all_posts();
+            foreach ($posts as $post) {   
+                echo $post->title . "<br />\n" . $post->created_at . "<br />\n" . $post->body . "<br />\n<br />\n";
+            }
+            */
         ?>
     </body>
 </html>
