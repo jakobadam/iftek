@@ -16,10 +16,10 @@ class Post_DAO extends Abstract_DAO {
      * @param type $is_published True hvis indlæget skal være synligt og false hvis skjult
      * @param type $user_id ID'et på den bruger, der opretter indlæget
      */
-    function add_post($title, $body, $is_published, $user_id) {
+    static function add_post($title, $body, $is_published, $user_id) {
         
         // Insæt nyt indlæg
-        $result = parent::query("INSERT INTO posts Values(" . CURDATE() . ", " . CURDATE() . ",'" . $title . "','" . $body . "'," . $is_published . "," . $user_id . ")");
+        $result = parent::query("INSERT INTO posts Values('', NOW(), NOW(), '" . $title . "','" . $body . "'," . $is_published . "," . $user_id . ")");
         
         // Vis fejl hvis indlæg ikke kunne oprettes
         if (!$result) {
@@ -31,7 +31,7 @@ class Post_DAO extends Abstract_DAO {
      * Opdater et allerede eksisterende post objekt
      * @param type $post Post objekt der skal opdateres
      */
-    function update_post($post) {
+    static function update_post($post) {
         
         // Opdater post ud fra det opdateret post objekt
         $result = parent::query("UPDATE posts 
@@ -39,7 +39,7 @@ class Post_DAO extends Abstract_DAO {
             body='" . $post->body . "', 
             is_published=" . $post->is_published . ", 
             user_id=" . $post->user_id . ",
-            updated_at=" . CURDATE() . " 
+            updated_at=NOW() 
             WHERE id = " . $post->id);
         
         // Vis fejl hvis blog indlæg ikke kunne hentes
@@ -53,7 +53,7 @@ class Post_DAO extends Abstract_DAO {
      * 
      * @return array Alle posts i databasen
      */
-    function get_all_posts() {
+    static function get_all_posts() {
         $result = parent::query("SELECT * FROM posts");
         
         // Vis fejl hvis blog indlæg ikke kunne hentes
@@ -66,7 +66,7 @@ class Post_DAO extends Abstract_DAO {
         while($row = mysql_fetch_array($result)) {
             
             // Lav et Post object ud af MySQL row resultatet
-            $post = $this->build_post($row);
+            $post = self::build_post($row);
             
             // Tilføj det nye post til listen
             array_push($posts, $post);
@@ -80,7 +80,7 @@ class Post_DAO extends Abstract_DAO {
      * 
      * @return array Alle posts i databasen
      */
-    function get_post_by_id($id) {
+    static function get_post_by_id($id) {
         $result = parent::query("SELECT * FROM posts WHERE id = " . $id . " LIMIT 1");
         
         // Vis fejl hvis blog indlæg ikke kunne hentes
@@ -105,7 +105,7 @@ class Post_DAO extends Abstract_DAO {
      * @param type $row MySQL row
      * @return Post model
      */
-    private function build_post($row) {
+    private static function build_post($row) {
         $post = new Post();
         $post->id = $row['id'];
         $post->created_at = $row['created_at'];

@@ -5,10 +5,10 @@
  */
 class Conf {
 
-    var $db_url = "localhost";
-    var $db_user = "root";
-    var $db_pwd = "";
-    var $db_name= "blog";
-
+    static $db_url = "localhost";
+    static $db_user = "root";
+    static $db_pwd = "";
+    static $db_name = "blog";
+    
 }
 ?>
