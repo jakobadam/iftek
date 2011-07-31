@@ -1,16 +1,17 @@
 body {
-  /*background: #00669C;*/
   background: #FFFFFF;
-  color: #FFF;
-  color: #c30;
-  font: 14px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+  color: #aaa;
+  font: 14px/1.5 Arial, Helvetica, sans-serif;
   margin: 0;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
+@font-face {
+    font-family: 'Goudy';
+    src: url('fonts/goudy.otf');
+}
 
 a {
-  color: #fc0;
+  color: #59BEDD;
   text-decoration: none;
 }
 
@@ -24,18 +25,28 @@ header{
   position:fixed;
   width: 100%;
   padding: 0 40px;   /*background: #c30;*//*  red*/
-  background: #00669C;
+  /*background: #00669C;*/
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   -ms-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-  color: #FFF;
+  color: #CCC;
+  background-color:#FFFFFF;
   font-size: 12px;
 }
 
+h1,h2,h3 {
+  font-family: 'Goudy', sans-serif;
+  font-size: 50px;
+  line-height: 1;
+  margin:0;
+ }
+
 h2 {
-  font-size: 40px;
-  margin: 0;
+    font-size: 40px;
+}
+h3{
+    font-size:30px;
 }
 
 ul, li, p{
@@ -52,23 +63,18 @@ nav ul li{
     display:inline;
 }
 
-nav a {
-  color: #fff;
+nav ul li a {
+  color: #59BEDD;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 nav a:before{
   /*content: "★";*/
 }
 
-h1 {
-  font-size: 50px;
-  line-height: 1;
-  margin:0;
- }
-
 section {
-  background: rgba(0, 0, 0, 0.02);
+  background: rgba(0, 0, 0, 0.01);
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -92,19 +98,26 @@ footer {
   -ms-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   font-size: 12px;
-  padding: 10px 40px;
+  padding: 20px 40px;
 }
-
 
 input,textarea{
     display:block;
 }
 
+.logo{
+  letter-spacing: 2px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  font-size: 70px;  
+} 
 .content{
-	padding:85px 40px 0 40px;
+    margin-top:110px;
+	padding:0 40px 0 40px;
 }
 
 .error{
+    color: #555;
+    font-weight:bold;
 	background-color: #FDD;
 }
 .message{

@@ -57,7 +57,7 @@ class Field{
 	function errors_as_html(){
 		if(count($this->errors) > 0){
 			$html = array();
-			array_push($html, '<ul>');
+			array_push($html, '<ul class="error">');
 			foreach($this->errors as $err){
 				array_push($html, "<li>$err</li>");
 			}

@@ -3,11 +3,11 @@
 {% block title %}Seneste Indlæg{% endblock %}
 
 {% block body %}
-<h1>Seneste Blog Indlæg</h1>
+<h1 style="text-align:right">Seneste Blog Indlæg</h1>
 <article>
 {% for post in posts %}
     <section>
-        <h2>{{ post.title }}</h2>
+        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
         <div class="blog-meta">
           Skrevet af: d. {{ post.publish|date("d-m-Y") }}
         </div>

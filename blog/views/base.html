@@ -7,13 +7,13 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <meta name="description" content="{% block description %}{% endblock %}" />
-    <link href="media/css/style.css" rel="stylesheet" />
+    <link href="media/css/style.css?v=1" rel="stylesheet" />
     {% block head %}{% endblock %}
   </head>
   <body>
     <header>
       <nav>
-        <h2>IFTEK Blog</h2>
+        <h2 class="logo">IFTEK Blog</h2>
         <ul>
           <li>
             <a href="{{url_root}}">hjem</a>
@@ -54,14 +54,14 @@
         <ul>
           {% if user %}
           <li>
-            <a href="{{url_root}}new_post.php">opret indlæg</a>
+            <a href="{{url_root}}new_post.php">opret indlæg</a> | 
           </li>
           <li>
             <a href="{{url_root}}logout.php">log ud</a>
           </li>
           {% else %}
           <li>
-            <a href="{{url_root}}login.php">log ind</a>
+            <a href="{{url_root}}login.php">log ind</a> 
           </li>
           {% endif %}
         </ul>
