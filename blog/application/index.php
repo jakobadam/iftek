@@ -1,10 +1,9 @@
 <?php
 
-include("base_controller.php");
+require_once("base_controller.php");
 
-$routes = array(
-	
-		);
+print_r($_SERVER);
+
 // include_once("dao/user_dao.php");
 // 
 // $user_dao = new User_DAO();
