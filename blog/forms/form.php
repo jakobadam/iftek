@@ -37,7 +37,9 @@ class Field{
 	
 	function process($data){
 		# FIXME: Error when not present?
-		$this->data = $data[$this->name];					
+		if(array_key_exists($this->name, $data)){
+    		$this->data = $data[$this->name];						    
+		}
 	}
 	
 	function validate(){
@@ -90,6 +92,7 @@ class Form{
 		$success = true;
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			foreach($this->fields as $field){
+			    print_r($field);
 				if(!$field->validate()){	
 					$success = false;
 				}

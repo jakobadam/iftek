@@ -30,6 +30,11 @@ function get_error_flashes(){
 	return get_flashes('errors');
 }
 
+function url_root(){
+    // FIXME: get this from conf file or request if possible
+    return "/blog/";
+}
+
 /**
  * Tilføjer værdier til konteksten - der sendes med når html renderes - 
  * som vi har brug for hver gang.
@@ -37,11 +42,12 @@ function get_error_flashes(){
 function populate_context($context){
 	if(array_key_exists('email', $_SESSION)){
 	 	// TODO: get user by email	
-	 	$user = array(email=>'foo@example.com');
+	 	$user = array('email'=>'foo@example.com');
 	 	$context['user'] = $user;
 	}
 	$context['messages'] = get_flashes();
 	$context['errors'] = get_error_flashes();
+    $context['url_root'] = url_root();
 	return $context;
 }
 

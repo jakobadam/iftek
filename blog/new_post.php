@@ -15,10 +15,10 @@ if($form->validate_on_submit()){
 	// $db->save();
 	// FIXME: include a message here
 	flash('Sejt, nyt indlæg oprettet!');
-	header('Location: /posts.php');
+	header('Location: ' . url_root() . 'posts.php');
 	die();	
 }
 
-echo(render("new_post_form.html", array(form=>$form)));
+echo(render("new_post_form.html", array('form'=>$form)));
 
 ?>

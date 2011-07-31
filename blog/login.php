@@ -6,6 +6,7 @@ include_once("models/user.php");
 
 $form = new LoginForm($_POST);
 
+
 if($form->validate_on_submit()){
 
 	$user = array(email=>'jakob', password =>'foobar');
@@ -17,7 +18,7 @@ if($form->validate_on_submit()){
 
 	$_SESSION['email'] = $user->email;
 	flash('Velkommen tilbage!');
-	header('Location: /');
+	header('Location: ' . url_root() . 'posts.php');
 	die();
 	
 }
