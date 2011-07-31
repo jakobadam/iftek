@@ -63,7 +63,7 @@ function render($template, $context=array()){
     //$twig = new Twig_Environment($loader, array('cache' => 'views_cache'));  
     $twig = new Twig_Environment($loader);  
     $template = $twig->loadTemplate($template);
-	print_r($context);
     return $template->render($context);
 }
+
 ?>
