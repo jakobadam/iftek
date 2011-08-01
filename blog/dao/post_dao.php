@@ -34,7 +34,7 @@ class Post_DAO extends Abstract_DAO {
     static function add($post) {
         
         // Opdater post ud fra det opdateret post objekt
-        $result = parent::query("INSERT INTO posts 
+        $stm = parent::query("INSERT INTO posts 
             (title, body, is_published, user_id, created_at) VALUES (
             '$post->title',
             '$post->body', 
@@ -43,7 +43,7 @@ class Post_DAO extends Abstract_DAO {
             NOW())");
         
         // Vis fejl hvis blog indlæg ikke kunne hentes
-        if (!$result) {
+        if (!$stm) {
             die('Blog indlæg kunne ikke oprettes: ' . mysql_error());
         }
     }
@@ -52,10 +52,10 @@ class Post_DAO extends Abstract_DAO {
      * Opdater et allerede eksisterende post objekt
      * @param type $post Post objekt der skal opdateres
      */
-    static function update_post($post) {
-        
+    static function update($post) {
+        // FIXME: sql injection
         // Opdater post ud fra det opdateret post objekt
-        $result = parent::query("UPDATE posts 
+        $stm = parent::query("UPDATE posts 
             SET title='" . $post->title . "', 
             body='" . $post->body . "', 
             is_published=" . $post->is_published . ", 
@@ -64,7 +64,7 @@ class Post_DAO extends Abstract_DAO {
             WHERE id = " . $post->id);
         
         // Vis fejl hvis blog indlæg ikke kunne hentes
-        if (!$result) {
+        if (!$stm) {
             die('Blog indlæg kunne ikke opdateres: ' . mysql_error());
         }
     }
@@ -75,25 +75,19 @@ class Post_DAO extends Abstract_DAO {
      * @param published_filter Kun publiseretede artikeler.
      * @return array Alle posts i databasen
      */
-    private static function get_all($published_filter) {
-        $sql;
-        if($published_filter){
-            $sql = "SELECT * FROM posts WHERE is_published = 1 ORDER BY created_at DESC";
-        }
-        else{
-            $sql = "SELECT * FROM posts ORDER BY created_at DESC";
-        }
+    static function all($filter="") {
         
-        $result = parent::query($sql);
+        $sql = "SELECT * FROM posts $filter ORDER BY created_at DESC";
+        $stm = parent::query($sql);
         
         // Vis fejl hvis blog indlæg ikke kunne hentes
-        if (!$result) {
+        if (!$stm) {
             die('Blog indlæg kunne ikke hentes: ' . mysql_error());
         }
         
         $posts = array();
 
-        while($row = mysql_fetch_array($result)) {
+        while($row = $stm->fetch()) {
             
             // Lav et Post object ud af MySQL row resultatet
             $post = new Post($row);
@@ -110,55 +104,20 @@ class Post_DAO extends Abstract_DAO {
      * 
      * @return array Alle posts i databasen
      */
-    static function get_all_posts() {
-        return self::get_all(false);    
-    }
-    
-    static function get_all_published_posts(){
-        return self::get_all(true);
-    }
-    
-    /**
-     * Hent en liste med alle blog posts i databasen
-     * 
-     * @return array Alle posts i databasen
-     */
-    static function get_post_by_id($id) {
-        $result = parent::query("SELECT * FROM posts WHERE id = " . $id . " LIMIT 1");
-        
-        // Vis fejl hvis blog indlæg ikke kunne hentes
-        if (!$result) {
-            die('Blog indlæg kunne ikke hentes: ' . mysql_error());
-        }
+    static function get($id) {
+        $stm = parent::query("SELECT * FROM posts WHERE id = " . $id . " LIMIT 1");
         
         // Hent resultat
-        $row = mysql_fetch_assoc($result);
+        $row = $stm->fetch();
         
         // Tjek om resultatet blev fundet
-        if (count($row) == 0)
-            return null;
+        if (!$row){
+            return null;            
+        }
         
         return new Post($row);
     }
     
-    /**
-     * Konverter en MySQL row til en Post model
-     * 
-     * @param type $row MySQL row
-     * @return Post model
-     */
-    // private static function build_post($row) {
-        // $post = new Post();
-        // $post->id = $row['id'];
-        // $post->created_at = $row['created_at'];
-        // $post->updated_at = $row['updated_at'];
-        // $post->title = $row['title'];
-        // $post->body = $row['body'];
-        // $post->is_published = $row['is_published'];
-        // $post->user_id = $row['user_id'];
-//         
-        // return $post;
-    // }
 }
 
 ?>

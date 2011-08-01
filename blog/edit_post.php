@@ -7,7 +7,7 @@ require_once "dao/post_dao.php";
 
 login_required();
 
-$post = Post_DAO::get_post_by_id($_GET['id']);
+$post = Post_DAO::get(intval($_GET['id']));
 if(!$post){
     flash_error('Det post findes ikke!');
     die();    
@@ -18,7 +18,7 @@ $form = new PostForm($_POST, $post);
 
 if($form->validate_on_submit()){
 	$form->populate_obj($post);
-    Post_DAO::update_post($post);
+    Post_DAO::update($post);
 	flash('Ændringer gemt!');
 	header('Location: ' . url_root() . 'posts.php');
 	die();	

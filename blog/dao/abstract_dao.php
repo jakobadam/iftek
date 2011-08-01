@@ -15,37 +15,44 @@ class Abstract_DAO {
    /**
     * Åben en forbindelse til databasen.
     * 
-    * @return type Link til databasen
+    * @return type connection til databasen
     */
    static function open_connection() {
        
        // Opret forbindelse til database-serveren
-       $link = mysql_connect(Conf::$db_url, Conf::$db_user, Conf::$db_pwd);
-      
+       try{
+            //$conn = new PDO('mysql:dbname=' . Conf::$db_name . ';host=' . Conf::$db_url, Conf::$db_user, Conf::$db_pwd);  
+            $conn = new PDO('mysql:dbname=blog;host=localhost', Conf::$db_user, Conf::$db_pwd);
+            $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );   
+            return $conn;
+       }
+       catch(PDOException $e){
+           // Hvis det mislykkedes giv brugeren en fejl
+           die('Kunne ikke oprette forbindelse til database-serveren: ' . $e);           
+       }
+    
+       // $link = mysql_connect(Conf::$db_url, Conf::$db_user, Conf::$db_pwd);
+//       
        // Overvej dette kald i stedet, så genbruges connections
        //mysql_pconnect()
-       
-       // Hvis det mislykkedes giv brugeren en fejl
-       if (!$link) {
-           die('Kunne ikke oprette forbindelse til database-serveren: ' . mysql_error());
-       }
+ 
        
        // Vælg blog databasen som standard database
-       $db = mysql_select_db(Conf::$db_name, $link);
-        
+       // $db = mysql_select_db(Conf::$db_name, $link);
+//         
        // Hvis det mislykkedes giv brugeren en fejl
-       if (!$db) {
-           die ('Kan ikke benytte den valgte database: ' . mysql_error());
-       }
+       // if (!$db) {
+           // die ('Kan ikke benytte den valgte database: ' . mysql_error());
+       // }
        
-       return $link;
     }
     
     /**
      * Luk forbindelsen til databasen
      */
     static function close_connection($connection) {
-        mysql_close($connection);
+        // FIXME: pass by value / reference?
+        $connection = null;
     }
      
     /**
@@ -57,12 +64,11 @@ class Abstract_DAO {
     static function query($query) {
         
         // Åben forbindelse til databasen hvis der ikke allerede findes en
-        self::open_connection();
-        
-        // Udfør forspørgsel på databasen
-        $result = mysql_query($query);
-        
-        return $result;
+        $conn = self::open_connection();
+        $stm = $conn->query($query);
+        // Hent som ordbog
+        $stm->setFetchMode(PDO::FETCH_ASSOC);  
+        return $stm;
     }
 }
 

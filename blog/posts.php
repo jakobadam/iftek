@@ -6,10 +6,10 @@ require_once("dao/post_dao.php");
 
 
 if(is_logged_in()){
-    $posts = Post_DAO::get_all_posts();
+    $posts = Post_DAO::all();
 }
 else{
-    $posts = Post_DAO::get_all_published_posts();
+    $posts = Post_DAO::all("WHERE is_published = 1");
 }
 
 
