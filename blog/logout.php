@@ -3,7 +3,7 @@
 include_once("base_controller.php");
 
 session_destroy();
-header('Location: /');
+header('Location: ' . url_root());
 die();
 
 ?>
