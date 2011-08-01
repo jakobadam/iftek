@@ -112,6 +112,7 @@ input,textarea{
 } 
 .content{
     margin-top:110px;
+    margin-bottom:110px;
 	padding:0 40px 0 40px;
 }
 
