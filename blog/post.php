@@ -1,18 +1,15 @@
 <?php
 
-include_once("base_controller.php");
-include_once("models/post.php");
+require_once("base_controller.php");
+require_once("models/post.php");
+require_once("dao/post_dao.php");
 
 $id = $_GET['id'];
-//$post = get_object_or_404();
-
-$post = new Post(array(
-    	'id'=>1,
-        'title'=>'title 1',
-        'body'=>'the body',
-        'user_id'=>1,
-        'created_at'=>'0000-00-00'
-        ));
+$post = Post_DAO::get_post_by_id($_GET['id']);
+if(!$post){
+    flash_error('Det post findes ikke!');
+    die();    
+} 
 
 echo(render("post.html", array('post'=>$post)));
 
