@@ -5,6 +5,9 @@
 {% block body %}
     <article>
         <h1>{{ post.title }}</h1>
+        {% if user%}
+            <a href="{{ post.edit_url}}">[rediger]</a>
+        {% endif %}
         <div class="blog-meta"><p>Skrevet af: den {{ post.publish|date }}</p></div>
         <div>{{post.body}}</div> 
     </article>
