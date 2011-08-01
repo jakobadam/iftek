@@ -7,11 +7,19 @@
 <article>
 {% for post in posts %}
     <section>
-        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+        <h3>
+            <a href="{{ post.url }}">{{ post.title }}</a>
+        </h3>
+        {% if user%}
+            <a href="{{ post.edit_url}}">[rediger]</a>
+        {% endif %}
         <div class="blog-meta">
-          Skrevet af: d. {{ post.publish|date("d-m-Y") }}
+        {% if not post.is_published %}
+          <span style="color:red">Ikke publiseret!</span>
+        {% endif %}
+          Skrevet d. {{ post.publish|date("d-m-Y") }}          
         </div>
-        <div>{{post.body}}</div>
+        <div>{{post.excerpt}}</div>
     </section> 
 {% endfor %}      
 </article>
