@@ -1,7 +1,7 @@
 <?php
 
-include("conf/conf.php");
-include("models/user.php");
+require_once("conf/conf.php");
+require_once("models/user.php");
 
 /**
  * Generel kode til at tilgå MySQL databasen for
