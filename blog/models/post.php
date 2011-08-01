@@ -14,5 +14,14 @@ class Post extends Model{
         return url_root() . 'post.php?id=' . $this->id;
     }
     
+    function edit_url(){
+        return url_root() . 'edit_post.php?id=' . $this->id;
+    }
+    
+    function excerpt(){
+        // FIXME: more logic
+        return substr($this->body, 0, 100);
+    }
+    
 }
 ?>

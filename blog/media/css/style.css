@@ -70,7 +70,7 @@ nav ul li a {
 }
 
 nav a:before{
-  /*content: "★";*/
+  content: "★";
 }
 
 section {
@@ -91,7 +91,7 @@ footer {
   color:#FFFFFF;	
   position: fixed;
   width: 100%;
-  background: #00669C;
+  background: #000000;
   bottom: 0;
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
@@ -122,7 +122,4 @@ input,textarea{
 }
 .message{
 	background-color: #DFD
-}
-.user{
-	background-color: #000;
 }
