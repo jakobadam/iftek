@@ -1,7 +1,7 @@
 <?php
 
-include_once ("abstract_dao.php");
-include_once ("models/post.php");
+require_once("abstract_dao.php");
+require_once("models/post.php");
 
 /**
  * Funktioner til at hente, indsætte og opdatere blog posts
@@ -24,6 +24,27 @@ class Post_DAO extends Abstract_DAO {
         // Vis fejl hvis indlæg ikke kunne oprettes
         if (!$result) {
             die('Blog post kunne ikke oprettes: ' . mysql_error());
+        }
+    }
+    
+    /**
+     * Opret nyt post i databasen
+     * @param post $post Objekt der skal gemmes i db'en.
+     */
+    static function add($post) {
+        
+        // Opdater post ud fra det opdateret post objekt
+        $result = parent::query("INSERT INTO posts 
+            (title, body, is_published, user_id, created_at) VALUES (
+            '$post->title',
+            '$post->body', 
+            $post->is_published, 
+            '$post->user_id',
+            NOW())");
+        
+        // Vis fejl hvis blog indlæg ikke kunne hentes
+        if (!$result) {
+            die('Blog indlæg kunne ikke oprettes: ' . mysql_error());
         }
     }
     
@@ -51,10 +72,19 @@ class Post_DAO extends Abstract_DAO {
     /**
      * Hent en liste med alle blog posts i databasen
      * 
+     * @param published_filter Kun publiseretede artikeler.
      * @return array Alle posts i databasen
      */
-    static function get_all_posts() {
-        $result = parent::query("SELECT * FROM posts");
+    private static function get_all($published_filter) {
+        $sql;
+        if($published_filter){
+            $sql = "SELECT * FROM posts WHERE is_published = 1 ORDER BY created_at DESC";
+        }
+        else{
+            $sql = "SELECT * FROM posts ORDER BY created_at DESC";
+        }
+        
+        $result = parent::query($sql);
         
         // Vis fejl hvis blog indlæg ikke kunne hentes
         if (!$result) {
@@ -66,13 +96,26 @@ class Post_DAO extends Abstract_DAO {
         while($row = mysql_fetch_array($result)) {
             
             // Lav et Post object ud af MySQL row resultatet
-            $post = self::build_post($row);
+            $post = new Post($row);
             
             // Tilføj det nye post til listen
             array_push($posts, $post);
         }  
         
         return $posts;
+    }
+    
+    /**
+     * Hent en liste med alle blog posts i databasen
+     * 
+     * @return array Alle posts i databasen
+     */
+    static function get_all_posts() {
+        return self::get_all(false);    
+    }
+    
+    static function get_all_published_posts(){
+        return self::get_all(true);
     }
     
     /**
@@ -89,14 +132,13 @@ class Post_DAO extends Abstract_DAO {
         }
         
         // Hent resultat
-        $row = mysql_fetch_row($result);
+        $row = mysql_fetch_assoc($result);
         
         // Tjek om resultatet blev fundet
-        if (cout($row) == 0)
+        if (count($row) == 0)
             return null;
         
-        // Byg Post object hvis resultat fandtes
-        return $this->build_post($row);
+        return new Post($row);
     }
     
     /**
@@ -105,18 +147,18 @@ class Post_DAO extends Abstract_DAO {
      * @param type $row MySQL row
      * @return Post model
      */
-    private static function build_post($row) {
-        $post = new Post();
-        $post->id = $row['id'];
-        $post->created_at = $row['created_at'];
-        $post->updated_at = $row['updated_at'];
-        $post->title = $row['title'];
-        $post->body = $row['body'];
-        $post->is_published = $row['is_published'];
-        $post->user_id = $row['user_id'];
-        
-        return $post;
-    }
+    // private static function build_post($row) {
+        // $post = new Post();
+        // $post->id = $row['id'];
+        // $post->created_at = $row['created_at'];
+        // $post->updated_at = $row['updated_at'];
+        // $post->title = $row['title'];
+        // $post->body = $row['body'];
+        // $post->is_published = $row['is_published'];
+        // $post->user_id = $row['user_id'];
+//         
+        // return $post;
+    // }
 }
 
 ?>
