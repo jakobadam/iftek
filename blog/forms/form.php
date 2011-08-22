@@ -128,10 +128,6 @@ class Form {
             }
         }
     }
-    
-    static function field($name=Null, $validators= array()){
-        return new Field($name, $validators);
-    }
 
     function populate_obj($obj) {
         foreach($this->fields as $name => $field) {
