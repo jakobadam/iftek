@@ -25,11 +25,11 @@ $prev_url = null;
 if($offset != null) {
     // FIXME: maybe clarify a bit...
     // Posts > offset sorteret stigende efter id
-    $posts = Post_DAO::all("WHERE id >= $offset " . (is_logged_in() ? "" : "AND is_published = 1 ") . "ORDER BY id ASC LIMIT $LIMIT");
+    $posts = Post_DAO::all("WHERE id <= $offset " . (is_logged_in() ? "" : "AND is_published = 1 ") . "ORDER BY id DESC LIMIT $LIMIT");
     // Posts < offset sorteret faldende efter id
-    $prev_posts = Post_DAO::all("WHERE id < $offset " . (is_logged_in() ? "" : "AND is_published = 1 ") . "ORDER BY id DESC LIMIT $PAGE_SIZE");
+    $prev_posts = Post_DAO::all("WHERE id > $offset " . (is_logged_in() ? "" : "AND is_published = 1 ") . "ORDER BY id ASC LIMIT $PAGE_SIZE");
 } else {
-    $posts = Post_DAO::all(is_logged_in() ? "WHERE is_published = 1 " : "" . "ORDER BY id ASC LIMIT $LIMIT");
+    $posts = Post_DAO::all((is_logged_in() ? "" : "WHERE is_published = 1 ") . "ORDER BY id DESC LIMIT $LIMIT");
 }
 
 // For at paginere hentes der PAGE_SIZE + 1 post. 
