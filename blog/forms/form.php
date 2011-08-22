@@ -1,4 +1,17 @@
 <?php
+
+function errors_as_html($errors) {
+    if(count($errors) > 0) {
+        $html = array();
+        array_push($html, '<ul class="error">');
+        foreach($errors as $err) {
+            array_push($html, "<li>$err</li>");
+        }
+        array_push($html, '</ul>');
+        return  join('', $html);
+    }
+        return '';
+}
 /**
  * Validator for felt.
  *
@@ -57,16 +70,7 @@ class Field {
     }
     
     function errors_as_html() {
-        if(count($this -> errors) > 0) {
-            $html = array();
-            array_push($html, '<ul class="error">');
-            foreach($this->errors as $err) {
-                array_push($html, "<li>$err</li>");
-            }
-            array_push($html, '</ul>');
-            return  join('', $html);
-        }
-        return '';
+        return errors_as_html($this->errors);
     }
 
     function populate_obj($obj) {
@@ -91,6 +95,9 @@ class Checkbox extends Field {
 
 class Form {
 
+    /** Fejl fælles for hele formen */
+    var $errors = array();
+    
     /**
      * Konstruer form udfra den givne ordbog. 
      * 
@@ -118,6 +125,16 @@ class Form {
             $field -> populate_obj($obj);
         }
     }
+    
+    /**
+     * Generel validering der ligger ude over de enkelte felter.
+     * Overskriv denne for validering på selve formen og ikke felterne.
+     * 
+     * @return boolean der indikerer om formen validerer.
+     */ 
+    function validate(){
+        return true;
+    }
 
     function validate_on_submit() {
         $success = true;
@@ -127,9 +144,23 @@ class Form {
                     $success = false;
                 }
             }
+            if($success){
+                // Hvis felterne validerer så valider den generelle.
+                try{
+                    $this->validate();
+                }
+                catch(exception $e){
+                    array_push($this -> errors, $e -> getMessage());
+                    $success = false;
+                }                       
+            }
             return $success;
         }
         return false;
+    }
+    
+    function errors_as_html() {
+        return errors_as_html($this->errors);
     }
 
 }?>
