@@ -36,7 +36,7 @@
     dojo.ready(function () {
 
       var editor_args = {
-        height:'', 
+        height:'100px', 
         extraPlugins:[
         'createLink', 
         'insertImage', 
@@ -44,7 +44,7 @@
         'dijit._editor.plugins.AlwaysShowToolbar']};
 
       dojo.query('#body').style({display:'none'});
-      body_editor = new dijit.Editor(editor_args, dojo.byId('body-field'));
+      body_editor = new dijit.Editor(editor_args, 'body-field');
       
       body_editor.set('value', dojo.byId('body').value);
 
