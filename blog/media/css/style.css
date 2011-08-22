@@ -24,8 +24,7 @@ header{
   margin:0;
   position:fixed;
   width: 100%;
-  padding: 0 40px;   /*background: #c30;*//*  red*/
-  /*background: #00669C;*/
+  padding: 0 40px;   
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   -ms-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
@@ -74,7 +73,7 @@ nav a:before{
 }
 
 section {
-  background: rgba(0, 0, 0, 0.01);
+  background-color: rgba(0, 0, 0, 0.01);
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -124,3 +123,11 @@ input,textarea{
 .message{
 	background-color: #DFD
 }
+.blog-meta span{
+    font-style:italic;
+    color:#AAA;
+    font-weight:bold;
+    background-color: #F3F3F3;
+    padding:2px;
+}
+
