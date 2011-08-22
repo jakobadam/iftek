@@ -4,6 +4,12 @@
 
 {% block body %}
 <h1 style="text-align:right">Seneste Blog Indlæg</h1>
+
+<div style="text-align:right">
+{% if prev_url %}<a href={{prev_url}}>&laquo;</a>{%else%}&nbsp;{% endif %}
+{% if next_url %}&nbsp;&nbsp;&nbsp;<a href="{{next_url}}">&raquo;</a>{% endif %}      
+</div>
+
 <article>
 {% for post in posts %}
     <section>
@@ -23,7 +29,13 @@
     </section>
 {% else %}
 <em>Ingen posts endnu!</em> 
-{% endfor %}      
+{% endfor %}
+
+<div style="text-align:right">
+{% if prev_url %}<a href={{prev_url}}>&laquo;</a>{%else%}&nbsp;{% endif %}
+{% if next_url %}&nbsp;&nbsp;&nbsp;<a href="{{next_url}}">&raquo;</a>{% endif %}      
+</div>
+      
 </article>
 {% endblock %}
 

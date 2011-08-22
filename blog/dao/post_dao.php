@@ -77,7 +77,7 @@ class Post_DAO extends Abstract_DAO {
      */
     static function all($filter="") {
         
-        $sql = "SELECT * FROM posts $filter ORDER BY created_at DESC";
+        $sql = "SELECT * FROM posts $filter"; 
         $stm = parent::query($sql);
         
         // Vis fejl hvis blog indlæg ikke kunne hentes
