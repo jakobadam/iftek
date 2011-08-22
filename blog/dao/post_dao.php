@@ -10,42 +10,22 @@ require_once("models/post.php");
 class Post_DAO extends Abstract_DAO {
     
     /**
-     * Opret et nyt blog indlæg
-     * @param type $title Titlen på det nye blogindlæg
-     * @param type $body Blog indlægets indhold / tekst
-     * @param type $is_published True hvis indlæget skal være synligt og false hvis skjult
-     * @param type $user_id ID'et på den bruger, der opretter indlæget
-     */
-    static function add_post($title, $body, $is_published, $user_id) {
-        
-        // Insæt nyt indlæg
-        $result = parent::query("INSERT INTO posts Values('', NOW(), NOW(), '" . $title . "','" . $body . "'," . $is_published . "," . $user_id . ")");
-        
-        // Vis fejl hvis indlæg ikke kunne oprettes
-        if (!$result) {
-            die('Blog post kunne ikke oprettes: ' . mysql_error());
-        }
-    }
-    
-    /**
      * Opret nyt post i databasen
      * @param post $post Objekt der skal gemmes i db'en.
      */
     static function add($post) {
         
         // Opdater post ud fra det opdateret post objekt
-        $stm = parent::query("INSERT INTO posts 
-            (title, body, is_published, user_id, created_at) VALUES (
-            '$post->title',
-            '$post->body', 
-            $post->is_published, 
-            '$post->user_id',
-            NOW())");
+        $stm = parent::prepare("INSERT INTO posts (title, body, is_published, user_id, created_at) VALUES (?,?,?,?,NOW())");
+            
+        $stm->execute(array($post->title, $post->body, $post->is_published, $post->user_id));
         
         // Vis fejl hvis blog indlæg ikke kunne hentes
         if (!$stm) {
             die('Blog indlæg kunne ikke oprettes: ' . mysql_error());
         }
+        
+        return Post_DAO::lastInsertId();
     }
     
     /**
@@ -53,15 +33,12 @@ class Post_DAO extends Abstract_DAO {
      * @param type $post Post objekt der skal opdateres
      */
     static function update($post) {
-        // FIXME: sql injection
+
         // Opdater post ud fra det opdateret post objekt
-        $stm = parent::query("UPDATE posts 
-            SET title='" . $post->title . "', 
-            body='" . $post->body . "', 
-            is_published=" . $post->is_published . ", 
-            user_id=" . $post->user_id . ",
-            updated_at=NOW() 
-            WHERE id = " . $post->id);
+        $stm = parent::prepare("UPDATE posts SET 
+            title = ?, body = ?, is_published = ?, user_id = ?, updated_at = NOW()
+            WHERE id = ?");
+        $stm->execute(array($post->title, $post->body, $post->is_published, $post->user_id, $post->id));
         
         // Vis fejl hvis blog indlæg ikke kunne hentes
         if (!$stm) {
