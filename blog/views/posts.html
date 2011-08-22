@@ -17,10 +17,12 @@
         {% if not post.is_published %}
           <span style="color:red">Ikke publiseret!</span>
         {% endif %}
-          Skrevet d. {{ post.publish|date("d-m-Y") }}          
+          <span>{{post.user.name}} d. {{ post.publish|date("d-m-Y") }}</span>          
         </div>
-        <div>{{post.excerpt}}</div>
-    </section> 
+        <div>{{post.excerpt|raw}}</div>
+    </section>
+{% else %}
+<em>Ingen posts endnu!</em> 
 {% endfor %}      
 </article>
 {% endblock %}
