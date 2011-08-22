@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Laver en html liste ud fra en liste af fejl.
+ * @param $errors list af fejlbeskeder.
+ */
 function errors_as_html($errors) {
     if(count($errors) > 0) {
         $html = array();
@@ -12,6 +16,7 @@ function errors_as_html($errors) {
     }
         return '';
 }
+
 /**
  * Validator for felt.
  *
@@ -80,10 +85,14 @@ class Field {
 
 }
 
+/**
+ * Checkbox er et specielt form felt. Det sendes kun med under submit
+ * når det er checket af.
+ */
 class Checkbox extends Field {
  
     function process($values) {
-        // A html form checkbox doen't submit a value at all if unchecked
+        // An HTML form checkbox doen't submit a value at all if unchecked
         if(array_key_exists($this -> name, $values)) {
             $this -> data = 1;
         } else {
@@ -95,7 +104,7 @@ class Checkbox extends Field {
 
 class Form {
 
-    /** Fejl fælles for hele formen */
+    /** Fejl der er fælles for hele formen */
     var $errors = array();
     
     /**
@@ -119,6 +128,10 @@ class Form {
             }
         }
     }
+    
+    static function field($name=Null, $validators= array()){
+        return new Field($name, $validators);
+    }
 
     function populate_obj($obj) {
         foreach($this->fields as $name => $field) {
@@ -128,7 +141,7 @@ class Form {
     
     /**
      * Generel validering der ligger ude over de enkelte felter.
-     * Overskriv denne for validering på selve formen og ikke felterne.
+     * Overskriv denne for validering på selve formen og ikke de enkelte felter.
      * 
      * @return boolean der indikerer om formen validerer.
      */ 
@@ -162,5 +175,5 @@ class Form {
     function errors_as_html() {
         return errors_as_html($this->errors);
     }
-
+   
 }?>
