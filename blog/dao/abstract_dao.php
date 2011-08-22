@@ -11,20 +11,25 @@ require_once("models/user.php");
  * benytte fra PHP.
  */
 class Abstract_DAO {
-   
+
+    static $conn;
    /**
     * Åben en forbindelse til databasen.
     * 
     * @return type connection til databasen
     */
    static function open_connection() {
-       
+           
+       if(self::$conn != null){
+           return self::$conn;
+       }
        // Opret forbindelse til database-serveren
+       
        try{
             //$conn = new PDO('mysql:dbname=' . Conf::$db_name . ';host=' . Conf::$db_url, Conf::$db_user, Conf::$db_pwd);  
-            $conn = new PDO('mysql:dbname=blog;host=localhost', Conf::$db_user, Conf::$db_pwd);
-            $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );   
-            return $conn;
+            self::$conn = new PDO('mysql:dbname=blog;host=localhost', Conf::$db_user, Conf::$db_pwd);
+            self::$conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );   
+            return self::$conn;
        }
        catch(PDOException $e){
            // Hvis det mislykkedes giv brugeren en fejl
@@ -50,9 +55,9 @@ class Abstract_DAO {
     /**
      * Luk forbindelsen til databasen
      */
-    static function close_connection($connection) {
+    static function close_connection() {
         // FIXME: pass by value / reference?
-        $connection = null;
+        self::$conn = null;
     }
      
     /**
@@ -69,6 +74,23 @@ class Abstract_DAO {
         // Hent som ordbog
         $stm->setFetchMode(PDO::FETCH_ASSOC);  
         return $stm;
+    }
+    
+    /**
+     * Opret prepared stm.
+     * 
+     * @param query der skal forberedes.
+     */
+    static function prepare($query){
+        $conn = self::open_connection();
+        $stm = $conn->prepare($query);
+        // Hent som ordbog
+        $stm->setFetchMode(PDO::FETCH_ASSOC);  
+        return $stm;
+    }
+    
+    static function lastInsertId(){
+        return self::$conn->lastInsertId();
     }
 }
 
