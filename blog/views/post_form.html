@@ -49,7 +49,6 @@
       body_editor.set('value', dojo.byId('body').value);
 
       dojo.query('form').onsubmit(function () {
-         body_editor.onDisplayChanged();
          dojo.byId('body').value = body_editor.get('value');
       });
    });
