@@ -1,16 +1,16 @@
 <?php
 
-require_once "base_controller.php";
-require_once "forms/login_form.php";
-require_once "models/user.php";
+require_once("base_controller.php");
+require_once("forms/login_form.php");
+require_once("models/user.php");
+require_once("dao/user_dao.php");
 
 $form = new LoginForm($_POST);
-
 
 if($form->validate_on_submit()){
 
     // FIXME: get_user(...)
-	$user = new User(array('id'=>1, email=>'jakob', password =>'foobar'));
+    $user = User_DAO::get_by_email_and_password($form->email->data, $form->password->data);
 	
 	if(!$user){
 	 	echo(render("login_form.html", array(errors=>array('Kunne ikke logge ind!'))));
