@@ -3,6 +3,7 @@
 {% block body %}
 <h1>{% block title%}{%endblock%}</h1>
 <form method="post" id="" action="">
+  
   <label>Title</label>
   <input type="textbox" id="title" name="title" value="{{form.title.data}}"/>
   {{ form.title.errors_as_html | raw}}
@@ -11,10 +12,47 @@
   <input id="is_published" name="is_published" type="checkbox" {% if form.is_published.data %}checked="checked"{% endif%} />
   
   <label>Tekst</label>
-  <textarea name="body" cols="70" rows="5">{{form.body.data}}</textarea>
+  
+  <div>
+      <div id="body-field"></div>
+  </div>
+  
+  <textarea id="body" name="body" cols="70" rows="5">{{form.body.data}}</textarea>
   {{ form.body.errors_as_html | raw }}
   
-  <input type="submit" value="Gem" />
+  
+  <p><input type="submit" value="Gem" /></p>
 
 </form>
 {% endblock %}
+
+{% block script %}
+  <script>
+    dojo.require("dijit.Editor");
+    dojo.require("dijit._editor.plugins.LinkDialog");
+    dojo.require("dijit._editor.plugins.ViewSource");
+    dojo.require("dijit._editor.plugins.AlwaysShowToolbar")
+
+    dojo.ready(function () {
+
+      var editor_args = {
+        height:'', 
+        extraPlugins:[
+        'createLink', 
+        'insertImage', 
+        {name: 'viewsource', stripScripts: false, stripComments:false}, 
+        'dijit._editor.plugins.AlwaysShowToolbar']};
+
+      dojo.query('#body').style({display:'none'});
+      body_editor = new dijit.Editor(editor_args, dojo.byId('body-field'));
+      
+      body_editor.set('value', dojo.byId('body').value);
+
+      dojo.query('form').onsubmit(function () {
+         body_editor.onDisplayChanged();
+         dojo.byId('body').value = body_editor.get('value');
+      });
+   });
+  </script>
+{% endblock %}
+
