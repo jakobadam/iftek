@@ -100,12 +100,16 @@ class Post_DAO extends Abstract_DAO {
     }
     
     /**
-     * Hent en liste med alle blog posts i databasen
+     * Hent et bestemt blog post fra databasen.
      * 
-     * @return array Alle posts i databasen
+     * @param id
+     * @return Post
      */
     static function get($id) {
-        $stm = parent::query("SELECT * FROM posts WHERE id = " . $id . " LIMIT 1");
+        $stm = parent::prepare("SELECT * FROM posts WHERE id = ? LIMIT 1");
+        
+        // udskift markøren - ? - med værdien
+        $stm->execute(array($id));
         
         // Hent resultat
         $row = $stm->fetch();
