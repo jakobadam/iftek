@@ -3,7 +3,6 @@
 include_once("base_controller.php");
 include_once("forms/post_form.php");
 include_once("models/post.php");
-include_once("dao/post_dao.php");
 
 login_required();
 $form = new PostForm($_POST);
@@ -15,7 +14,7 @@ if($form->validate_on_submit()){
     // NOTE: user_id sættes ved login, og er derfor altid tilstede her.
     $post->user_id = $_SESSION['user_id'];
 	
-	Post_DAO::add($post);
+	Post::add($post);
     
 	flash('Sejt, nyt indlæg oprettet!');
 	header('Location: ' . url_root() . 'posts.php');

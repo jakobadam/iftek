@@ -6,7 +6,7 @@
 <h1>Login</h1>
 <form method="post" action="/blog/login.php">
   <label>Email</label>
-  <input type="textbox" id="email" name="email" value="{{form.email.data}}" />
+  <input type="textbox" id="email" name="email" value="{{form.email.value}}" />
   {{form.email.errors_as_html|raw}}
   
   <label>Kodeord</label>

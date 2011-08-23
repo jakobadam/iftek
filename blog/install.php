@@ -1,10 +1,10 @@
 <?php
 
-require_once("dao/user_dao.php");
+require_once("models/user.php");
 require_once("base_controller.php");
 require_once("forms/signup_form.php");
 
-$users = User_DAO::get_all_users();
+$users = User::get_all_users();
 
 if(count($users) == 0){
     $form = new SignupForm($_POST);
@@ -12,9 +12,9 @@ if(count($users) == 0){
     if($form->validate_on_submit()){
         $user = new User();
         $form->populate_obj($user);
-        User_DAO::add($user);
+        User::add($user);
         flash("Oprettede bruger $user->name");
-        $_SESSION['user_id'] = User_DAO::lastInsertId();
+        $_SESSION['user_id'] = User::lastInsertId();
         header('Location: ' . url_root());
     }
     else{

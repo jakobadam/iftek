@@ -5,11 +5,11 @@
 <form method="post" id="" action="">
   
   <label>Title</label>
-  <input type="textbox" id="title" name="title" value="{{form.title.data}}"/>
-  {{ form.title.errors_as_html | raw}}
+  <input type="textbox" id="title" name="title" value="{{form.title.value}}"/>
+  {{ form.title.errors_as_html|raw}}
   	
   <label>Publiseret</label>
-  <input id="is_published" name="is_published" type="checkbox" {% if form.is_published.data %}checked="checked"{% endif%} />
+  <input id="is_published" name="is_published" type="checkbox" {% if form.is_published.value %}checked="checked"{% endif%} />
   
   <label>Tekst</label>
   
@@ -17,7 +17,7 @@
       <div id="body-field"></div>
   </div>
   
-  <textarea id="body" name="body" cols="70" rows="5">{{form.body.data}}</textarea>
+  <textarea id="body" name="body" cols="70" rows="5">{{form.body.value}}</textarea>
   {{ form.body.errors_as_html | raw }}
   
   

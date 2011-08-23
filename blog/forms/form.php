@@ -31,7 +31,7 @@ class Required {
     }
 
     function validate($field) {
-        if(!$field -> data || $field -> data == '') {
+        if(!$field -> value || $field -> value == '') {
             throw new Exception($this -> message);
         }
     }
@@ -44,7 +44,7 @@ class Required {
 class Field {
 
     var $validators;
-    var $data;
+    var $value;
     var $name;
     var $errors = array();
 
@@ -68,7 +68,7 @@ class Field {
         if(array_key_exists($this -> name, $values)) {
             $value = $values[$this->name];
             if($value){
-                $this->data = $value;            
+                $this->value = $value;            
             }
         } 
  
@@ -80,7 +80,7 @@ class Field {
 
     function populate_obj($obj) {
         $name = $this -> name;
-        $obj -> $name = $this -> data;
+        $obj -> $name = $this -> value;
     }
 
 }
@@ -94,9 +94,9 @@ class Checkbox extends Field {
     function process($values) {
         // An HTML form checkbox doen't submit a value at all if unchecked
         if(array_key_exists($this -> name, $values)) {
-            $this -> data = 1;
+            $this -> value = 1;
         } else {
-            $this -> data = 0;
+            $this -> value = 0;
         }
     }
 
@@ -110,14 +110,14 @@ class Form {
     /**
      * Konstruer form udfra den givne ordbog. 
      * 
-     * @param $data POST.
+     * @param $value POST.
      * @param $instance objekt med default værdier.
      */
     function __construct($values=array(), $instance=null) {
         if($instance) {
             foreach(get_object_vars($instance) as $key => $value) {
                 if(property_exists($this, $key)) {
-                    $this -> $key -> data = $value;
+                    $this -> $key -> value = $value;
                 }
             }
         }
