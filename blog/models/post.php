@@ -1,7 +1,6 @@
 <?php
 
 require_once("model.php");
-require_once("dao/user_dao.php");
 require_once("base_controller.php");
 
 class Post extends Model{
@@ -31,7 +30,7 @@ class Post extends Model{
     
     function user(){
         if($this->_user == null){
-            $this->_user = User_DAO::get($this->user_id);
+            $this->_user = User::get($this->user_id);
         }
         return $this->_user;
     }
@@ -113,10 +112,14 @@ class Post extends Model{
         
         $sql = "SELECT * FROM posts $filter"; 
         if($published_only){
-            $sql = $sql . " AND is_published = 1";
+            if($filter != ''){
+                $sql = $sql . " AND is_published = 1";            
+            }
+            else{
+                $sql = $sql . " WHERE is_published = 1";            
+            }
         }
         $sql = $sql . " ORDER BY id $order LIMIT $limit";
-            
         $stm = Post::query($sql);
 
         // Vis fejl hvis blog indlæg ikke kunne hentes
