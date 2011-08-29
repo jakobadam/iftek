@@ -19,7 +19,7 @@ if($form->validate_on_submit()){
 	$form->populate_obj($post);
     Post::update($post);
 	flash('Ændringer gemt!');
-	header('Location: ' . url_root() . 'posts.php');
+	header('Location: posts.php');
 	die();	
 }
 

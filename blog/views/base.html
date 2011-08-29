@@ -18,7 +18,7 @@
         <h2 class="logo">IFTEK Blog</h2>
         <ul>
           <li>
-            <a href="{{url_root}}">hjem</a>
+            <a href="posts.php">hjem</a>
           </li>
         </ul>
       </nav>
@@ -56,14 +56,14 @@
         <ul>
           {% if user %}
           <li>
-            <a href="{{url_root}}new_post.php">opret indlæg</a> | 
+            <a href="new_post.php">opret indlæg</a> | 
           </li>
           <li>
-            <a href="{{url_root}}logout.php">log ud</a>
+            <a href="logout.php">log ud</a>
           </li>
           {% else %}
           <li>
-            <a href="{{url_root}}login.php">log ind</a> 
+            <a href="login.php">log ind</a> 
           </li>
           {% endif %}
         </ul>

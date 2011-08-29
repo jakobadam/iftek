@@ -17,7 +17,7 @@ if($form->validate_on_submit()){
 	Post::add($post);
     
 	flash('Sejt, nyt indlæg oprettet!');
-	header('Location: ' . url_root() . 'posts.php');
+	header('Location: posts.php');
 	die();	
 }
 

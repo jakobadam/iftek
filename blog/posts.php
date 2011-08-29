@@ -12,7 +12,7 @@ require_once ("models/post.php");
 // }
 // echo(render("posts.html", array('posts'=>$posts)));
 
-$PAGE_SIZE = 2;
+$PAGE_SIZE = 10;
 $LIMIT = $PAGE_SIZE + 1;
 
 $offset = null;
