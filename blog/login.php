@@ -12,7 +12,8 @@ if($form->validate_on_submit()){
     $user = User::get_by_email_and_password($form->email->value, $form->password->value);
 	
 	if(!$user){
-	 	echo(render("login_form.html", array('errors'=>array('Kunne ikke logge ind!'))));
+	    flash_error('Kunne ikke logge ind!');
+	 	echo(render("login_form.html"));
 		die();
 	}
 

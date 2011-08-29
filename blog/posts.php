@@ -53,14 +53,14 @@ if($offset != null) {
 if(count($posts) > $PAGE_SIZE) {
     // det er det sidste element vi skal fortsætte fra
     $next_id = $posts[count($posts) - 1] -> id;
-    $next_url = url_root() . "posts.php?offset=$next_id";
+    $next_url = "posts.php?offset=$next_id";
     $posts = array_slice($posts, 0, -1);
 }
 
 if($prev_posts != null) {
     // det er det første element vi skal fortsætte fra
     $prev_id = $prev_posts[0] -> id;
-    $prev_url = url_root() . "posts.php?offset=$prev_id";
+    $prev_url = "posts.php?offset=$prev_id";
 }
 
 echo(render("posts.html", array('posts' => $posts, 'next_url' => $next_url, 'prev_url' => $prev_url)));

@@ -15,7 +15,7 @@ if(count($users) == 0){
         User::add($user);
         flash("Oprettede bruger $user->name");
         $_SESSION['user_id'] = User::lastInsertId();
-        header('Location: ' . url_root());
+        header('Location: posts.php');
     }
     else{
         // Hvis der ikke er nogen bruger endnu gå til signup_form.html
