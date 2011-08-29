@@ -63,4 +63,6 @@ if($prev_posts != null) {
     $prev_url = url_root() . "posts.php?offset=$prev_id";
 }
 
-echo(render("posts.html", array('posts' => $posts, 'next_url' => $next_url, 'prev_url' => $prev_url)));?>
+echo(render("posts.html", array('posts' => $posts, 'next_url' => $next_url, 'prev_url' => $prev_url)));
+
+?>
