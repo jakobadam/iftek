@@ -1,5 +1,6 @@
 <?php
 
+require_once("conf/config.php");
 /**
  * Generisk Model klasse.
  * 
@@ -38,7 +39,7 @@ class Model{
        
        try{
             // Opret forbindelse til database-serveren
-            self::$conn = new PDO('mysql:dbname=blog;host=localhost', Conf::$db_user, Conf::$db_pwd);
+            self::$conn = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_URL, DB_USER, DB_PWD);
             self::$conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );   
             return self::$conn;
        }
