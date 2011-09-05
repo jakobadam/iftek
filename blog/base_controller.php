@@ -1,6 +1,7 @@
 <?php
 
-require_once 'libs/Twig/Autoloader.php';
+require_once('libs/Twig/Autoloader.php');
+require_once('models/user.php');
 
 Twig_Autoloader::register();
 
@@ -30,24 +31,18 @@ function get_error_flashes(){
 	return get_flashes('errors');
 }
 
-function url_root(){
-    // FIXME: get this from conf file or request if possible
-    return "/blog/";
-}
-
 /**
  * Tilføjer værdier til konteksten - der sendes med når html renderes - 
  * som vi har brug for hver gang.
  */
 function populate_context($context){
-	if(array_key_exists('email', $_SESSION)){
+	if(array_key_exists('user_id', $_SESSION)){
 	 	// TODO: get user by email	
-	 	$user = array('email'=>'foo@example.com');
+	 	$user = new User(array('email'=>'foo@example.com', 'id'=>1));
 	 	$context['user'] = $user;
 	}
 	$context['messages'] = get_flashes();
 	$context['errors'] = get_error_flashes();
-    $context['url_root'] = url_root();
 	return $context;
 }
 
@@ -55,12 +50,16 @@ function populate_context($context){
  * Omdireger til login hvis bruger ikke er logget ind.
  */
 function login_required(){
-	if(!array_key_exists('email', $_SESSION)){
+	if(!is_logged_in()){
 		// TODO: redirect to where the user is coming from.
 		flash_error('Hey, du skal være logget ind!');
 	 	echo(render('login_form.html'));
 	 	die();
 	}	
+}
+
+function is_logged_in(){
+    return array_key_exists('user_id', $_SESSION);
 }
 
 function render($template, $context=array()){

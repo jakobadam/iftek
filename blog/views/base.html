@@ -8,15 +8,17 @@
     <![endif]-->
     <meta name="description" content="{% block description %}{% endblock %}" />
     <link href="media/css/style.css?v=1" rel="stylesheet" />
+    <link href="//static.irigo.com/dojo/1.6.1/dijit/themes/tundra/tundra.css" rel="stylesheet" />      
+     <script src="//static.irigo.com/dojo/1.6.1/dojo/dojo.xd.js"></script>
     {% block head %}{% endblock %}
   </head>
-  <body>
+  <body class="tundra">
     <header>
       <nav>
         <h2 class="logo">IFTEK Blog</h2>
         <ul>
           <li>
-            <a href="{{url_root}}">hjem</a>
+            <a href="posts.php">hjem</a>
           </li>
         </ul>
       </nav>
@@ -54,20 +56,26 @@
         <ul>
           {% if user %}
           <li>
-            <a href="{{url_root}}new_post.php">opret indlæg</a> | 
+            <a href="new_post.php">opret indlæg</a> | 
           </li>
           <li>
-            <a href="{{url_root}}logout.php">log ud</a>
+            <a href="logout.php">log ud</a>
           </li>
           {% else %}
           <li>
-            <a href="{{url_root}}login.php">log ind</a> 
+            <a href="login.php">log ind</a> 
           </li>
           {% endif %}
         </ul>
       </nav>
       <p>
-        © 2011 IFTEK Inc.
+        © 2011 IFTEK. Powered by:
+        <a href="http://www.cabo.dk/produkter/irigo-servers">
+            <img style="vertical-align: middle" height="40" src="media/img/irigo-servers.png" alt="irigo servers" />
+        </a>
+      </p>
+      <p>
+          
       </p>
       </footer>
 

@@ -4,16 +4,38 @@
 
 {% block body %}
 <h1 style="text-align:right">Seneste Blog Indlæg</h1>
+
+<div style="text-align:right">
+{% if prev_url %}<a href={{prev_url}}>&laquo;</a>{%else%}&nbsp;{% endif %}
+{% if next_url %}&nbsp;&nbsp;&nbsp;<a href="{{next_url}}">&raquo;</a>{% endif %}      
+</div>
+
 <article>
 {% for post in posts %}
     <section>
-        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
+        <h3>
+            <a href="{{ post.url }}">{{ post.title }}</a>
+        </h3>
+        {% if user%}
+            <a href="{{ post.edit_url}}">[rediger]</a>
+        {% endif %}
         <div class="blog-meta">
-          Skrevet af: d. {{ post.publish|date("d-m-Y") }}
+        {% if not post.is_published %}
+          <span style="color:red">Ikke publiseret!</span>
+        {% endif %}
+          <span>{{post.user.name}} d. {{ post.publish|date("d-m-Y") }}</span>          
         </div>
-        <div>{{post.body}}</div>
-    </section> 
-{% endfor %}      
+        <div>{{post.excerpt|raw}}</div>
+    </section>
+{% else %}
+<em>Ingen posts endnu!</em> 
+{% endfor %}
+
+<div style="text-align:right">
+{% if prev_url %}<a href={{prev_url}}>&laquo;</a>{%else%}&nbsp;{% endif %}
+{% if next_url %}&nbsp;&nbsp;&nbsp;<a href="{{next_url}}">&raquo;</a>{% endif %}      
+</div>
+      
 </article>
 {% endblock %}
 

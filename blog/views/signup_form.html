@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Oprettelse{% endblock %}
+
+{% block body %}
+<h1>Oprettelse</h1>
+<form method="post" action="">
+  
+  {{form.errors_as_html|raw}}
+    
+  <label>Email</label>
+  <input type="textbox" id="email" name="email" value="{{form.email.value}}" />
+  {{form.email.errors_as_html|raw}}
+  
+  <label>Navn</label>
+  <input type="textbox" id="name" name="name" value="{{form.name.value}}" />
+  {{form.name.errors_as_html|raw}}
+  
+  <label>Kodeord</label>
+  <input id="password" name="password" type="password" />
+  {{form.password.errors_as_html|raw}}
+  
+  <label>Bekræft kodeord</label>
+  <input id="password2" name="password2" type="password" />
+  {{form.password2.errors_as_html|raw}}
+  
+  <input type="submit" value="Opret" />
+
+</form>
+{% endblock %}

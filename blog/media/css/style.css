@@ -10,6 +10,10 @@ body {
     src: url('fonts/goudy.otf');
 }
 
+img{
+    border:none;    
+}
+
 a {
   color: #59BEDD;
   text-decoration: none;
@@ -24,8 +28,7 @@ header{
   margin:0;
   position:fixed;
   width: 100%;
-  padding: 0 40px;   /*background: #c30;*//*  red*/
-  /*background: #00669C;*/
+  padding: 0 40px;   
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   -ms-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
@@ -70,11 +73,12 @@ nav ul li a {
 }
 
 nav a:before{
-  /*content: "★";*/
+  content: "★";
 }
 
 section {
-  background: rgba(0, 0, 0, 0.01);
+  display: block; /* To work arround firefox not supporting HTML5 section element */
+  background-color: rgba(0, 0, 0, 0.01);
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -91,7 +95,7 @@ footer {
   color:#FFFFFF;	
   position: fixed;
   width: 100%;
-  background: #00669C;
+  background: #000000;
   bottom: 0;
   -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
@@ -112,6 +116,7 @@ input,textarea{
 } 
 .content{
     margin-top:110px;
+    margin-bottom:110px;
 	padding:0 40px 0 40px;
 }
 
@@ -123,6 +128,11 @@ input,textarea{
 .message{
 	background-color: #DFD
 }
-.user{
-	background-color: #000;
+.blog-meta span{
+    font-style:italic;
+    color:#AAA;
+    font-weight:bold;
+    background-color: #F3F3F3;
+    padding:2px;
 }
+
