@@ -2,13 +2,15 @@
 
 {% block title %}{{ post.title }}{% endblock %}
 
-{% block body %}
+{% block body %} 
     <article>
         <h1>{{ post.title }}</h1>
-        {% if user%}
+        {% if user %}
             <a href="{{ post.edit_url}}">[rediger]</a>
         {% endif %}
         <div class="blog-meta"><span>{{ post.user.name }} d. {{ post.publish|date }}</span></div>
-        <div>{{post.body|raw}}</div> 
+        <div>
+            {{post.body|raw}}
+        </div> 
     </article>
 {% endblock %}
