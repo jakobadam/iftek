@@ -2,6 +2,8 @@
 APP="blog"
 echo "uploader $APP ..."
 
+cd $(dirname $0)
+
 if [ -f config.cfg ];then
   source config.cfg
 fi
