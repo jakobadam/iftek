@@ -17,7 +17,9 @@ if($form->validate_on_submit()){
 		die();
 	}
 
+	$_SESSION['user_email'] = $user->email;
 	$_SESSION['user_id'] = $user->id;
+
 	flash('Velkommen tilbage!');
 	header('Location: posts.php');
 	die();
