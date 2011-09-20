@@ -25,7 +25,7 @@ class Post extends Model{
     
     function excerpt(){
         // FIXME: mere logik her dette ødelægger html'en!
-        return substr($this->body, 0, 100);
+        return $this->body;
     }
     
     function user(){
