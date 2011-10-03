@@ -23,7 +23,7 @@
         {% if not post.is_published %}
           <span style="color:red">Ikke publiseret!</span>
         {% endif %}
-          <span>{{post.user.name}} d. {{ post.publish|date("d-m-Y") }}</span>          
+          <span>{{post.user.name}} d. {{ post.created_at|date("d-m-Y") }}</span>          
         </div>
         <div>{{post.excerpt|raw}}</div>
     </section>
