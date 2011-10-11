@@ -3,7 +3,7 @@ option confirm off
 
 #################################
 # Udskift dit brugernavn og kodeord her
-open brugernavn:kodeord@193.200.45.133
+open Brugernavn:Kodeord@skyen.iftek.dk:22
 #################################
 
 lcd blog
@@ -18,5 +18,4 @@ synchronize local
 
 
 close
-
 exit
