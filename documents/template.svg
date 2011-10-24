@@ -1505,7 +1505,6 @@
      inkscape:export-ydpi="72.000000"
      transform="scale(0.697327,0.818574)"
      sodipodi:linespacing="100%"><tspan
-       id="tspan1129">...</tspan><tspan
        sodipodi:role="line"
        id="tspan1209"
        x="211.43971"
@@ -1667,7 +1666,7 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-size:20.000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:arial;text-anchor:start;writing-mode:lr;"
+       style="font-size:15.000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:arial;text-anchor:start;writing-mode:lr;"
        x="15.613099"
        y="418.72867"
        id="text1827"
@@ -1680,7 +1679,7 @@
          sodipodi:role="line"
          id="tspan1832"
          x="15.613099"
-         y="438.72867">Iftek</tspan></text>
+         y="438.72867">&lt;h1&gt;Iftek&lt;/h1&gt;</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:20.000000;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:arial;text-anchor:start;writing-mode:lr;"
@@ -1699,7 +1698,7 @@
          y="153.20242">...</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:20.000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:arial;text-anchor:start;writing-mode:lr;"
+       style="font-size:15.000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:arial;text-anchor:start;writing-mode:lr;"
        x="224.33897"
        y="418.86539"
        id="text1856"
@@ -1712,7 +1711,7 @@
          sodipodi:role="line"
          id="tspan1859"
          x="224.33897"
-         y="438.86539">Egå</tspan></text>
+         y="438.86539">&lt;h1&gt;Egå&lt;/h1&gt;</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:10.000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:arial;text-anchor:start;writing-mode:lr;"
