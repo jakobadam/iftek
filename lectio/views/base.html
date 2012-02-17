@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}{% endblock %} | Facebook</title>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="description" content="{% block description %}{% endblock %}" />
+    <link href="media/css/style.css?v=1" rel="stylesheet" />
+    <link href="//static.irigo.com/dojo/1.6.1/dijit/themes/tundra/tundra.css" rel="stylesheet" />      
+    <script src="//static.irigo.com/dojo/1.6.1/dojo/dojo.xd.js"></script>
+    {% block head %}{% endblock %}
+  
+  </head>
+  <body class="tundra">
+    <header>
+      <nav>
+        <h2 class="logo">Facebook Lectio Updater</h2>
+      </nav>
+    </header>
+
+    <div class="content">
+      {% if errors %}
+      <section class="error">
+        <ul>
+          {% for e in errors %}
+          <li>
+            {{e}}
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+      {% if messages %}
+      <section class="message">
+        <ul>
+          {% for m in messages %}
+          <li>
+            {{m}}
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+      {% block body %}{% endblock %}
+    </div>
+
+    <footer{% if user %} class="user"{%endif%}>
+      <nav>
+        <ul>
+          {% if user %}
+          <li>
+            <a href="new_post.php">opret indlæg</a> | 
+          </li>
+          <li>
+            <a href="logout.php">log ud</a>
+          </li>
+          {% else %}
+          <li>
+            <a href="login.php">log ind</a> 
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      <p>
+        © 2011 IFTEK. Powered by:
+        <a href="http://www.cabo.dk/produkter/irigo-servers">
+            <img style="vertical-align: middle" height="40" src="media/img/irigo-servers.png" alt="irigo servers" />
+        </a>
+      </p>
+    </footer>
+      {% block script %}{% endblock %}
+  </body>
+</html>

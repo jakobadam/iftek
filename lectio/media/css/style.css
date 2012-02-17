@@ -1,0 +1,165 @@
+body {
+  background: #FFFFFF;
+  color: #aaa;
+  font: 14px/1.5 Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+@font-face {
+    font-family: 'Goudy';
+    src: url('fonts/goudy.otf');
+}
+
+img{
+    border:none;    
+}
+
+a {
+  color: #59BEDD;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+header{
+  top: 0;		
+  margin:0;
+  position:fixed;
+  width: 100%;
+  padding: 0 40px;   
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  -ms-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  color: #CCC;
+  background-color:#FFFFFF;
+  font-size: 12px;
+}
+
+h1,h2,h3 {
+  font-family: 'Goudy', sans-serif;
+  font-size: 50px;
+  line-height: 1;
+  margin:0;
+ }
+
+h2 {
+    font-size: 40px;
+}
+h3{
+    font-size:30px;
+}
+
+ul, li, p{
+	margin:0;
+}
+
+nav ul {
+  list-style: none;
+  margin:0 0 5px 0;
+  padding:0;
+}
+
+nav ul li{
+    display:inline;
+}
+
+nav ul li a {
+  color: #59BEDD;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+nav a:before{
+  content: "★";
+}
+
+.fb_button .fb_button_text, .fb_button_rtl .fb_button_text {
+background: #5F78AB url(http://static.ak.fbcdn.net/rsrc.php/v1/yL/r/FGFbc80dUKj.png);
+border-top: solid 1px #879AC0;
+border-bottom: solid 1px #1A356E;
+color: white;
+display: block;
+font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+font-weight: bold;
+padding: 2px 6px 3px 6px;
+margin: 1px 1px 0 21px;
+text-shadow: none;
+}
+section {
+  display: block; /* To work arround firefox not supporting HTML5 section element */
+  background-color: rgba(0, 0, 0, 0.01);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px rgba(255, 255, 255, 0.3);
+  -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px rgba(255, 255, 255, 0.3);
+  -ms-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px rgba(255, 255, 255, 0.3);
+  margin-bottom: 20px;
+  padding: 15px;
+  margin:10px 0;
+}
+
+footer {
+  color:#FFFFFF;	
+  position: fixed;
+  width: 100%;
+  background: #000000;
+  bottom: 0;
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  -ms-box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  font-size: 12px;
+  padding: 20px 40px;
+}
+
+a.fbSignInButton{
+    background: url("../img/facebook-button.png") no-repeat scroll center center transparent;
+    width: 130px;
+    height: 15px;
+    overflow: hidden;
+    padding: 0 0 0 20px;
+    text-align: center;
+    text-decoration: none !important;
+    text-transform: none;
+    color: #F0F0EB;
+    display: block;
+    font-size:10px;
+}
+
+input,textarea{
+    display:block;
+}
+
+.logo{
+  letter-spacing: 2px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  font-size: 70px;  
+} 
+.content{
+    margin-top:110px;
+    margin-bottom:110px;
+	padding:0 40px 0 40px;
+}
+
+.error{
+    color: #555;
+    font-weight:bold;
+	background-color: #FDD;
+}
+.message{
+	background-color: #DFD
+}
+.blog-meta span{
+    font-style:italic;
+    color:#AAA;
+    font-weight:bold;
+    background-color: #F3F3F3;
+    padding:2px;
+}
+
+
