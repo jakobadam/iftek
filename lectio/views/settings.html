@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Facebook Lectio{% endblock %}
+
+{% block body %}
+<h1 style="text-align:right">Facebook Lectio</h1>
+
+
+{% if user %}
+<form method="post">
+    <label for="lectio_id">Lectio ID:</label>
+    <input id="lectio_id" name="lectio_id" type="text" value="{{user.lectio_id}}" />
+    <input type="submit" value="Gem" />
+</form>
+{% else%}
+<a class="fbSignInButton" href="{{login_url}}">Login with Facebook</a>
+{% endif%}
+
+{% endblock %}
+

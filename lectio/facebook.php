@@ -2,22 +2,24 @@
 
 require_once("conf/config.php");
 
-
-function fbInit($code){
-    $access_token = fbGetAccessToken($code); 
+function fbInit(){
+    if(isset($code)){
+        $access_token = fbGetAccessToken($code); 
+        fbSaveAccessToken($access_token);
+    }
     $user = fbInitUser($access_token); 
     return $user;
 }
 
-function fbInitUser($access_token){
+function fbGetUser($access_token){
     $graph_url = "https://graph.facebook.com/me?access_token=" . $access_token;
     $user = json_decode(file_get_contents($graph_url));
+    $user->access_token = $access_token;
     return $user;
 }
 
-function fbGetUser(){
-    global $user;
-    return $user;
+function fbIsLoggedIn(){
+    return isset($_SESSION['fbUser']);
 }
 
 function fbGetLoginURL(){
@@ -30,7 +32,7 @@ function fbGetLoginURL(){
     $_SESSION['state'] = $unique_rand_id;
     
     $dialog_url = "http://graph.facebook.com/oauth/authorize?client_id=" . APP_ID 
-    . "&redirect_uri=" . urlencode(APP_URL) 
+    . "&redirect_uri=" . urlencode(APP_REDIRECT_URL) 
     . "&state=" . $unique_rand_id . "&scope=" . APP_PERMISSIONS;
     
     return $dialog_url;
@@ -40,6 +42,13 @@ function fbGetLogoutURL(){
     
 }
 
+/**
+ * Hent token fra facebook der skal benyttes til at foretage handlinger på
+ * brugerens vegne.
+ * 
+ * @param $code midlertidig kode fået via facebook login.
+ * @return token
+ */
 function fbGetAccessToken($code){
     
     // CSRF check
@@ -50,7 +59,7 @@ function fbGetAccessToken($code){
     
     $token_url = "https://graph.facebook.com/oauth/access_token?" 
     . "client_id=" . APP_ID 
-    . "&redirect_uri=" . urlencode(APP_URL) 
+    . "&redirect_uri=" . urlencode(APP_REDIRECT_URL) 
     . "&client_secret=" . APP_SECRET 
     . "&code=" . $code;
 
@@ -62,11 +71,18 @@ function fbGetAccessToken($code){
     return $params['access_token'];
 }
 
-function fbSetAccessToken(){
+function fbSaveUser($user){
+    $file_name = $user->id;
+    $path = DB_PATH . '/' . $file_name;
+    $fh = fopen($path, 'w');
     
+    if(!$fh){
+        echo "Could not open file: $path";
+        die();
+    }
+    fwrite($fh, json_encode($user));
+    fclose($fh);
 }
-
-
 
 function fbPost($msg){
     global $user;
