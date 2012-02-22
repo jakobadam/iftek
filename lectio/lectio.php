@@ -2,18 +2,30 @@
 // Kilde til parser: http://simplehtmldom.sourceforge.net/
 include('simple_html_dom.php');
 
-// Dato
-$actual_date = mktime(0,0,0,date("m"),date("d")+4,date("Y"));
 
-// Parse lectio og print lektier og aflyste timer
-parse_lectio($actual_date, 1903012531);
+function lectioGetSchemaURL($student_id, $date){
+    // Udregn ugenummer og år. Fx uge 7 år 2012
+    // er 072012
+    $week_year = lectioGetWeekYear($date);
+
+    return 'https://www.lectio.dk/lectio/256/SkemaNy.aspx?type=elev&elevid=' . $student_id . '&week=' . $week_year;
+}
+
+function lectioGetSchema($student_id, $date){    
+    // Hent lectio hjemmesiden
+    $url = lectioGetSchemaURL($student_id, $date);
+    return file_get_html($url);
+}
 
 
-function parse_lectio($date, $elev_id) {
-	
-	// Udregn ugenummer. Fx uge 7
-	$weekyear = get_weeknumber($date);
-	
+/**
+ * Henter elevens aktiviteter fra lectio for en given dag og returnerer dette som HTML.
+ */
+function lectioGetActivities($student_id, $date) {
+	$html_out = "";
+    
+    // Find ud af hvilken dag i ugen vi arbejder med. 0 er søndag, 1 er mandag og 6 er lørdag
+    $day_of_week = date("w", $date);
 	// I tabellen over skemaet, er der 6 colonner. Første er tidspunkt på dagen, næste er mandag osv.
 	// Colonne 0: Tidspunkt
 	// Colonne 1: Mandag
@@ -22,11 +34,7 @@ function parse_lectio($date, $elev_id) {
 	// Colonne 4: Torsdag
 	// Colonne 5: Fredag
 	
-	// Find ud af hvilken dag i ugen vi arbejder med. 0 er søndag, 1 er mandag og 6 er lørdag
-	$dayofweek = date("w", $date);
-	
-  	// Hent lectio hjemmesiden
-  	$html = file_get_html('https://www.lectio.dk/lectio/256/SkemaNy.aspx?type=elev&elevid=' . $elev_id . '&week=' . $weekyear);
+  	$html = lectioGetSchema($student_id, $date); 
 	
 	// Find skemaet - en tabel med css class = s2skema
 	$skema = $html->find('.s2skema', 0); // 0 betyder at vi kun ønsker, at finde første element med class = s2skema
@@ -42,7 +50,7 @@ function parse_lectio($date, $elev_id) {
 		foreach($tr->find('td') as $td) {
 					
 			// Medtag kun colonner, der gælder for den korrekte dag. Fx er $td_index 1 = mandag
-			if ($td_index == $dayofweek) {
+			if ($td_index == $day_of_week) {
 				
 				// Find alle links (<a> tags) i cellen. De linker til de forskellige timer
 				foreach($td->find('a') as $link) {
@@ -50,7 +58,7 @@ function parse_lectio($date, $elev_id) {
 					// Tjek om <a> tagget har en href (link)
 					if ($link->href != null) {
 						$href = $link->href;
-						parse_lectio_aktivitet($href);
+						$html_out = $html_out + lectioParseActivity($href);
 					}
 				}
 			}
@@ -59,13 +67,14 @@ function parse_lectio($date, $elev_id) {
 			$td_index++;
 		}	
 	}
+    return $html_out;
 }
 
 /*
  * Parse en konkret aktivitet / time
  */
-function parse_lectio_aktivitet($url) {
-	
+function lectioParseActivity($url) {
+    
 	// Hent siden
 	$html = file_get_html('https://www.lectio.dk' . $url);
 	
@@ -98,48 +107,60 @@ function parse_lectio_aktivitet($url) {
 			$td_text = substr($td, 4, strlen($td) - 9);
 			
 			// Udfyld variablerne
-			if ($th_text == "Tidspunkt:")
-				$tidspunkt = $td_text;
-			else if ($th_text == "Hold:")
-				$hold = $td->find('a', 0)->innertext; // Hold er altid et link, fjern det
-			else if ($th_text == "Note:")
-				$note = trim($td_text);
-			else if ($th_text == "Lektier:")
-				$lektier = trim($td_text);
-			else if ($th_text == "Status:")
-				$status = $td_text;
+			if ($th_text == "Tidspunkt:"){
+				$tidspunkt = $td_text;			    
+			}
+			else if ($th_text == "Hold:"){
+				$hold = $td->find('a', 0)->innertext; // Hold er altid et link, fjern det			    
+			}
+			else if ($th_text == "Note:"){
+				$note = trim($td_text);		    
+			}
+			else if ($th_text == "Lektier:"){
+				$lektier = trim($td_text);			    
+			}
+			else if ($th_text == "Status:"){
+				$status = $td_text;			    
+			}
 		}
 	}
 	
+    // lektier samlet er note feltet + lektier feltet
 	$lektier_samlet = '';
 	
 	// Tjek at lektier indholder tekst
-	if ($lektier != null && strlen($lektier) > 0)
-		$lektier_samlet = $lektier;
-	
+	if ($lektier != null && strlen($lektier) > 0){
+		$lektier_samlet = $lektier;	    
+	}
+    
 	// Tjek at note indholder tekst
 	if ($note != null && strlen($note) > 0) {
 		
-		// Hvis lektier indholdte tekst, tilføj bindestreg mellem lektierne.
+		// Hvis lektier indholdte tekst, tilføj bindestreg mellem lektier og note.
 		if (strlen($lektier_samlet) > 0)
 			$lektier_samlet = $lektier_samlet . ' - ';
 		
 		// Tilføj note til samlet lektier
 		$lektier_samlet = $lektier_samlet . $note;
 	}
-	
+    
 	// Print kun indholdet hvis der er lektier eller timen er aflyst
+	$html = "";
+
 	if (strlen($lektier_samlet) > 0 || $status == 'Aflyst') {
-		
-		echo '<br/><br/>';
+		    
+		$html = $html . '<br/><br/>';
 		
 		// Tjek om timen er aflyst
-		if ($status == 'Aflyst')
-			echo '<b><font color=\'red\'>Aflyst</font></b> ';
+		if ($status == 'Aflyst'){
+			$html = $html . '<b><font color="red">Aflyst</font></b>';		    
+		}
 		
-		echo '<b>Hold:</b> ' . $hold . ' <b>Tidspunkt:</b> ' . $tidspunkt . '<br/>';
-		echo '<b>Lektier: </b> ' . $lektier_samlet;
+		$html = $html . '<b>Hold:</b> ' . $hold . ' <b>Tidspunkt:</b> ' . $tidspunkt . '<br/>';
+		$html = $html . '<b>Lektier: </b> ' . $lektier_samlet;
 	}
+    
+    return $html;
 }
 
 /*
@@ -148,18 +169,21 @@ function parse_lectio_aktivitet($url) {
  * Benyttes som parameter til lectio for
  * at åbne et skema i en bestemt uge.
  */
-function get_weeknumber($date) {
-	$weekyear = "";
+function lectioGetWeekYear($date) {
+    
+	$week_year = "";
+    
 	$week = (int)date('W', $date);
 	$year = (int)date('Y', $date);
+    
 	if ($week < 10)
-		$weekyear = "0" . $week;
+		$week_year = "0" . $week;
 	else
-		$weekyear = $week;
+		$week_year = $week;
 	
-	$weekyear = $weekyear . $year; 
+	$week_year = $week_year . $year; 
 	
-	return $weekyear; 
+	return $week_year; 
 }
 
 ?>

@@ -7,13 +7,23 @@
 
 
 {% if user %}
-<form method="post">
-    <label for="lectio_id">Lectio ID:</label>
-    <input id="lectio_id" name="lectio_id" type="text" value="{{user.lectio_id}}" />
-    <input type="submit" value="Gem" />
+<form method="post" class="well" >
+    <h2>Indstillinger for {{user.name}}</h2>
+    <label for="lectio_id">Lectio ID</label>
+    <input id="lectio_id" name="lectio_id" type="text" value="{{user.lectio_id}}" style="width:260px" />
+    <span class="help-inline">Dit elev id fra lectio. http://www.lectio.dk/lectio/256/SkemaNy.aspx?type=elev&elevid={dette er dit elevid}</span>
+    <div>
+        <button type="submit" class="btn btn-primary">Gem</button>    
+    </div>
 </form>
+
+<form method="post" class="well" action="show.php">
+    <h2>Vis Lectio Facebook Feed Nyhed</h2>
+    <button type="submit" class="btn btn-primary">Vis</button>
+</form>
+
 {% else%}
-<a class="fbSignInButton" href="{{login_url}}">Login with Facebook</a>
+<a class="fbSignInButton" href="{{login_url}}">Login med Facebook</a>
 {% endif%}
 
 {% endblock %}

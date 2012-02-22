@@ -14,12 +14,6 @@
   
   </head>
   <body class="tundra">
-    <header>
-      <nav>
-        <h2 class="logo">Facebook Lectio Updater</h2>
-      </nav>
-    </header>
-
     <div class="content">
       {% if errors %}
       <section class="error">
@@ -48,24 +42,8 @@
     </div>
 
     <footer{% if user %} class="user"{%endif%}>
-      <nav>
-        <ul>
-          {% if user %}
-          <li>
-            <a href="new_post.php">opret indlæg</a> | 
-          </li>
-          <li>
-            <a href="logout.php">log ud</a>
-          </li>
-          {% else %}
-          <li>
-            <a href="login.php">log ind</a> 
-          </li>
-          {% endif %}
-        </ul>
-      </nav>
       <p>
-        © 2011 IFTEK. Powered by:
+        © 2012 IFTEK. Powered by:
         <a href="http://www.cabo.dk/produkter/irigo-servers">
             <img style="vertical-align: middle" height="40" src="media/img/irigo-servers.png" alt="irigo servers" />
         </a>

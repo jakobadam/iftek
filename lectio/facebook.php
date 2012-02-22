@@ -2,15 +2,11 @@
 
 require_once("conf/config.php");
 
-function fbInit(){
-    if(isset($code)){
-        $access_token = fbGetAccessToken($code); 
-        fbSaveAccessToken($access_token);
-    }
-    $user = fbInitUser($access_token); 
-    return $user;
-}
-
+/**
+ * Hent bruger data fra facebook.
+ * 
+ * @param $access_token fra login.
+ */
 function fbGetUser($access_token){
     $graph_url = "https://graph.facebook.com/me?access_token=" . $access_token;
     $user = json_decode(file_get_contents($graph_url));
@@ -22,10 +18,7 @@ function fbIsLoggedIn(){
     return isset($_SESSION['fbUser']);
 }
 
-function fbGetLoginURL(){
-    
-    //https://graph.facebook.com/oauth/authorize?client_id=202423869273&redirect_uri=http%3A%2F%2Fwww.endomondo.com%2Ffacebook%2Fconnect%3Faction%3Dsignin&scope=publish_stream,offline_access,email"
-    
+function fbGetLoginURL(){    
     // CSRF protection
     // http://en.wikipedia.org/wiki/Cross-site_request_forgery    
     $unique_rand_id = md5(uniqid(rand(), TRUE));
@@ -71,6 +64,11 @@ function fbGetAccessToken($code){
     return $params['access_token'];
 }
 
+/**
+ * Gem brugeren lokalt.
+ * 
+ * @param $user brugeren der skal gemmes.
+ */
 function fbSaveUser($user){
     $file_name = $user->id;
     $path = DB_PATH . '/' . $file_name;
@@ -84,11 +82,18 @@ function fbSaveUser($user){
     fclose($fh);
 }
 
-function fbPost($msg){
-    global $user;
+/**
+ * Post besked til brugers væg.
+ * 
+ * @param $user brugeren der hvis væg der skal postes til.
+ * @param $msg beskeden der skal postes.
+ * 
+ * @return respons fra facebook.
+ */
+function fbPost($user, $msg){
     
-    $user_feed_url = 'https://graph.facebook.com/' . $user->id . '/feed' . '?app_id=' . $app_id;
-    $data = array('access_token'=>$params['access_token'], 'message'=>$msg);
+    $user_feed_url = 'https://graph.facebook.com/' . $user->id . '/feed' . '?app_id=' . APP_ID;
+    $data = array($user->access_token, 'message'=>$msg);
     
     $ch = curl_init();
 
@@ -101,7 +106,7 @@ function fbPost($msg){
         die();   
     }
     curl_close($ch);
-    return $result;
+    return $response;
 }
 
 ?>
