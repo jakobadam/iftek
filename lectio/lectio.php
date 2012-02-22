@@ -21,8 +21,12 @@ function lectioGetSchema($student_id, $date){
 /**
  * Henter elevens aktiviteter fra lectio for en given dag og returnerer dette som HTML.
  */
-function lectioGetActivities($student_id, $date) {
-	$html_out = "";
+function lectioGetActivities($student_id, $date=null) {
+    
+    if($date == null){
+        // hvis ikke sat, sæt til idag.
+        $date = time(); 
+    }
     
     // Find ud af hvilken dag i ugen vi arbejder med. 0 er søndag, 1 er mandag og 6 er lørdag
     $day_of_week = date("w", $date);
@@ -40,6 +44,7 @@ function lectioGetActivities($student_id, $date) {
 	$skema = $html->find('.s2skema', 0); // 0 betyder at vi kun ønsker, at finde første element med class = s2skema
 	
 	// Gennemløb alle rækker i tabellen (<tr> tags)
+	$parsed_activities = array();
 	foreach($skema->find('tr') as $tr) {
 		
 		// Index så vi kan styre, hvilken celle vi arbejder med.
@@ -58,7 +63,7 @@ function lectioGetActivities($student_id, $date) {
 					// Tjek om <a> tagget har en href (link)
 					if ($link->href != null) {
 						$href = $link->href;
-						$html_out = $html_out + lectioParseActivity($href);
+						array_push($parsed_activities, lectioParseActivity($href));
 					}
 				}
 			}
@@ -67,7 +72,13 @@ function lectioGetActivities($student_id, $date) {
 			$td_index++;
 		}	
 	}
-    return $html_out;
+
+    return join(' ', $parsed_activities);
+}
+
+function lectioSantize($html){
+    // håndterer æøå
+    return mb_ereg_replace('<br />', '', $html);
 }
 
 /*
@@ -108,19 +119,19 @@ function lectioParseActivity($url) {
 			
 			// Udfyld variablerne
 			if ($th_text == "Tidspunkt:"){
-				$tidspunkt = $td_text;			    
+				$tidspunkt = trim($td_text);			    
 			}
 			else if ($th_text == "Hold:"){
-				$hold = $td->find('a', 0)->innertext; // Hold er altid et link, fjern det			    
+				$hold = lectioSantize($td->find('a', 0)->innertext); // Hold er altid et link, fjern det			    
 			}
 			else if ($th_text == "Note:"){
-				$note = trim($td_text);		    
+				$note = lectioSantize($td_text);		    
 			}
 			else if ($th_text == "Lektier:"){
-				$lektier = trim($td_text);			    
+				$lektier = lectioSantize($td_text);			    
 			}
 			else if ($th_text == "Status:"){
-				$status = $td_text;			    
+				$status = $td_text;
 			}
 		}
 	}
@@ -145,22 +156,20 @@ function lectioParseActivity($url) {
 	}
     
 	// Print kun indholdet hvis der er lektier eller timen er aflyst
-	$html = "";
+	$txt = "";
 
 	if (strlen($lektier_samlet) > 0 || $status == 'Aflyst') {
 		    
-		$html = $html . '<br/><br/>';
-		
 		// Tjek om timen er aflyst
 		if ($status == 'Aflyst'){
-			$html = $html . '<b><font color="red">Aflyst</font></b>';		    
+			$txt = $txt . 'Aflyst ';		    
 		}
 		
-		$html = $html . '<b>Hold:</b> ' . $hold . ' <b>Tidspunkt:</b> ' . $tidspunkt . '<br/>';
-		$html = $html . '<b>Lektier: </b> ' . $lektier_samlet;
+		$txt = $txt . 'Hold: ' . $hold . ' Tidspunkt: ' . $tidspunkt;
+		$txt = $txt . 'Lektier: ' . $lektier_samlet;
 	}
     
-    return $html;
+    return $txt;
 }
 
 /*

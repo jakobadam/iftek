@@ -64,6 +64,27 @@ function fbGetAccessToken($code){
     return $params['access_token'];
 }
 
+function fbGetOrCreateLocalUser($access_token){
+    $fb_user = fbGetUser($access_token);
+    $user = fbGetLocalUser($fb_user->id);
+    if($user == null){
+        $fb_user->access_token = $access_token;
+        fbSaveUser($fb_user);
+        $user = $fb_user;
+    }
+    return $user;
+}
+
+function fbGetLocalUser($id){
+    $user; 
+    $path = DB_PATH . '/' . $id;
+    $contents = file_get_contents($path);
+    if($contents != null){
+        $user = json_decode($contents);
+    }
+    return $user;
+}
+
 /**
  * Gem brugeren lokalt.
  * 
@@ -93,8 +114,11 @@ function fbSaveUser($user){
 function fbPost($user, $msg){
     
     $user_feed_url = 'https://graph.facebook.com/' . $user->id . '/feed' . '?app_id=' . APP_ID;
-    $data = array($user->access_token, 'message'=>$msg);
     
+    $data = array('access_token'=>$user->access_token, 'message'=>utf8_encode($msg));
+    
+    print_r($data);
+    die();
     $ch = curl_init();
 
     curl_setopt($ch,CURLOPT_URL, $user_feed_url);

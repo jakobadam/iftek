@@ -3,8 +3,6 @@
 {% block title %}Facebook Lectio{% endblock %}
 
 {% block body %}
-<h1 style="text-align:right">Facebook Lectio</h1>
-
 
 {% if user %}
 <form method="post" class="well" >
@@ -17,9 +15,14 @@
     </div>
 </form>
 
-<form method="post" class="well" action="show.php">
-    <h2>Vis Lectio Facebook Feed Nyhed</h2>
+<form method="post" class="well" action="activities.php">
+    <h2>Vis Lektier</h2>
     <button type="submit" class="btn btn-primary">Vis</button>
+</form>
+
+<form method="post" class="well" action="post.php">
+    <h2>Post dagens lektier på facebook</h2>
+    <button type="submit" class="btn btn-primary">Post</button>
 </form>
 
 {% else%}

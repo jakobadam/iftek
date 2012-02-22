@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Facebook Lectio{% endblock %}
+
+{% block body %}
+
+<form method="post" class="well" action="">
+    <div style="text-align:right">
+        <a href={{yesterday_url}}>&laquo;</a>
+        &nbsp;&nbsp;&nbsp;
+        <a href="{{tomorrow_url}}">&raquo;</a>      
+    </div>
+    <h2>Lektier ({{human_date}})</h2>
+    {{lectio_html|raw}}
+</form>
+
+{% endblock %}
+

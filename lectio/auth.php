@@ -10,10 +10,7 @@ if(empty($code)){
 }
 
 $access_token = fbGetAccessToken($code);
-$user = fbGetUser($access_token);
-
-// Gem brugeren lokalt
-fbSaveUser($user);
+$user = fbGetOrCreateLocalUser($access_token);
 
 $_SESSION['fbUser']  = $user;  
 header('Location: index.php') ;

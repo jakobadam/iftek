@@ -1,5 +1,6 @@
 <?php
 
+require_once('base_controller.php');
 require_once('facebook.php');
 require_once('lectio.php');
 
@@ -11,10 +12,28 @@ function testSaveUser(){
     
     $obj = json_decode(file_get_contents('db/1'));   
     if($token != $obj->access_token){
-        echo('FEJL test_save_user<br>'); 
+        echo('FEJL testSaveUser<br>'); 
     }
     else{
-        echo('OK test_save_user<br>');
+        echo('OK testSaveUser<br>');
+    }
+}
+
+function testGetLocalUser(){
+    $user = json_decode('{"id":1}');
+    $token = 'foobar';
+    $user->access_token = $token;
+    fbSaveUser($user);
+    
+    $local_user = fbGetLocalUser($user->id);
+    if(!property_exists($local_user, 'access_token')){
+        echo('FEJL testGetLocalUser<br>');
+    }
+    else if($local_user->access_token != 'foobar'){
+        echo('FEJL testGetLocalUser<br>');
+    }
+    else{
+        echo('OK testGetLocalUser<br>');
     }
 }
 
@@ -27,11 +46,11 @@ function testLectioGetWeekYear(){
     $week_year = lectioGetWeekYear($first_of_march_2012);
     
     if($week_year != $expected){
-        echo('FEJL test_lectio_get_week_year<br>');
+        echo('FEJL testLectionGetWeekYear<br>');
         echo('Forventede:' . $expected . ' men var: ' . $week_year . '<br>');
     }
     else{
-        echo('OK test_lectio_get_week_year');    
+        echo('OK testLectionGetWeekYear<br>');    
     }
 }
 
@@ -41,32 +60,52 @@ function testLectioGetSchemaURL(){
     $url = lectioGetSchemaURL($student_id, $first_of_march_2012);
     $expected = 'https://www.lectio.dk/lectio/256/SkemaNy.aspx?type=elev&elevid=1637126536&week=082012';
     if($expected != $url){
-        echo('FEJL test_lectio_get_schema_url<br>');
+        echo('FEJL testLectioGetSchemaURL<br>');
     }
     else{
-        echo('OK test_lectio_get_schema_url');
+        echo('OK testLectioGetSchemaURL<br>');
     }
 }
 
 function testLectioParseActivity(){
     $activity_url = '/lectio/256/aktivitet/aktivitetinfo.aspx?id=3671690080&prevurl=SkemaNy.aspx?type=elev&elevid=1637126536&week=082012';
-    echo lectioParseActivity($activity_url);
+    $expected_starts_with = 'Hold: 3s EN Tidspunkt:'; 
     
+    $activity_html = lectioParseActivity($activity_url); 
+    
+    $activity_sub_string = substr($activity_html, 0, strlen($expected_starts_with));
+    
+    if($expected_starts_with != $activity_sub_string){
+        echo('FEJL testLectioParseActivity<br>');
+        echo('Expected: <br>' . $expected_starts_with . ' var: <br>' . $activity_sub_string);
+    }
+    else{
+        echo('OK testLectioParseActivity<br>');
+    }
 }
 
 function testLectioGetActivities(){
     $student_id = '1637126536';
-    $first_of_march_2012 = mktime(0, 0, 0, 2, 20, 2012);
-    echo lectioGetActivities($student_id, $first_of_march_2012);
+    $feb_22_2012 = mktime(0, 0, 0, 2, 22, 2012);
+    $activities_html = lectioGetActivities($student_id, $feb_22_2012);
+    
+    $expected_starts_with = 'Hold: 3g Fy Tidspunkt:';     
+    $activities_sub_string = substr($activities_html, 0, strlen($expected_starts_with));
+    
+    if($activities_sub_string != $expected_starts_with){
+        echo('FEJL testLectioGetActivities<br>');
+    }
+    else{
+        echo('OK testLectioGetActivities<br>');
+    }
 }
 
+
+testSaveUser();
+testGetLocalUser();
+testLectioGetWeekYear();
+testLectioGetSchemaURL();
 testLectioParseActivity();
-
-//testLectioGetActivities();
-
-//test_save_user();
-//test_lectio_get_week_year();
-//test_lectio_get_schema_url();
-//test_lectio_parser();
+testLectioGetActivities();
 
 ?>
