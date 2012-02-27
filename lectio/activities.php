@@ -22,9 +22,15 @@ if(array_key_exists('fbUser', $_SESSION)){
     $human_date = strftime('%d-%m-%Y', $date);
 
     // Parse lectio og print lektier og aflyste timer
-    $lectio_html = lectioGetActivities($user->lectio_id, $date);
+    $activities = lectioGetActivities($user->lectio_id, $date);
+
+    $txt = '';
+    foreach($activities as $activity){
+        $txt = $txt . $activity['class'] . ' ' . $activity['time'] . ' ' . $activity['homework'] . '.';
+    }
+    
     echo(render("activities.html", array(
-        'lectio_html'=>$lectio_html, 
+        'lectio_html'=>$txt, 
         'yesterday_url'=>$yesterday_url,
         'tomorrow_url'=>$tomorrow_url,
         'human_date'=>$human_date

@@ -8,8 +8,14 @@ if(array_key_exists('fbUser', $_SESSION)){
     $user = $_SESSION['fbUser'];
     
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        $lectio_html = lectioGetActivities($user->lectio_id);
-        $response = json_decode(fbPost($user, $lectio_html));
+        $activities = lectioGetActivities($user->lectio_id);
+        
+        $txt = '';
+        foreach($activities as $activity){
+            $txt = $txt . $activity['class'] . ' ' . $activity['time'] . ' ' . $activity['homework'] . '.';
+        }
+        
+        $response = json_decode(fbPost($user, $txt));
         
         if(array_key_exists('error', $response)){
             flash($response->error, 'error');

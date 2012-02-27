@@ -1,13 +1,11 @@
 <?php
 // Kilde til parser: http://simplehtmldom.sourceforge.net/
-include('simple_html_dom.php');
-
+include('libs/simple_html_dom.php');
 
 function lectioGetSchemaURL($student_id, $date){
     // Udregn ugenummer og år. Fx uge 7 år 2012
     // er 072012
     $week_year = lectioGetWeekYear($date);
-
     return 'https://www.lectio.dk/lectio/256/SkemaNy.aspx?type=elev&elevid=' . $student_id . '&week=' . $week_year;
 }
 
@@ -62,8 +60,10 @@ function lectioGetActivities($student_id, $date=null) {
 					
 					// Tjek om <a> tagget har en href (link)
 					if ($link->href != null) {
-						$href = $link->href;
-						array_push($parsed_activities, lectioParseActivity($href));
+                        
+                        // Hent siden
+                        $html = file_get_html('https://www.lectio.dk' . $link->href);
+						array_push($parsed_activities, lectioParseActivity($html));
 					}
 				}
 			}
@@ -73,22 +73,36 @@ function lectioGetActivities($student_id, $date=null) {
 		}	
 	}
 
-    return join(' ', $parsed_activities);
+    return $parsed_activities;
 }
 
+/**
+ * Ryd op i strengen fra lectio. 
+ * 
+ * Dvs. fjern overflødige spaces, konverter html entities
+ * til deres rigtige karakterer, og fjern breaks (<br />).
+ */
 function lectioSantize($html){
-    // håndterer æøå
-    return mb_ereg_replace('<br />', '', $html);
+    // mb_ereg_replace erstatter tegn i en såkaldt multibyte streng 
+    // (fx en unicode streng med æøå)
+    
+    // erstatter steder med 2 eller flere spaces med 1
+    $spaces_collapsed = mb_ereg_replace('(\s){2,}', ' ', $html);
+    // fjerner steder med <br /> med
+    $breaks_removed = mb_ereg_replace('<br />', '', $spaces_collapsed);
+    // konverter html entities som &#230; til æ
+    $entities_decoded = html_entity_decode($breaks_removed, ENT_NOQUOTES, 'UTF-8');
+    // fjerner spaces i enderne
+    return trim($entities_decoded);  
 }
 
 /*
  * Parse en konkret aktivitet / time
+ * 
+ * @param - $html simple_html_dom 
  */
-function lectioParseActivity($url) {
-    
-	// Hent siden
-	$html = file_get_html('https://www.lectio.dk' . $url);
-	
+function lectioParseActivity(/*simple_html_dom*/$html) {
+        
 	// Find tabel med al information om aktiviteten
 	$div = $html->find('.islandContent', 0);
 	$table = $div->find('table', 0); 
@@ -114,12 +128,12 @@ function lectioParseActivity($url) {
 			// Fjerner <th> og <td> fra teksten, så vi kun har den rene tekst uden tags
 			// substr(tekst, start, længde)
 			// Vi starter 4 tegn inde. Længden er hele længden - 9 tegn. De 9 tegn er længden af: <th></th>
-			$th_text = substr($th, 4, strlen($th) - 9);
-			$td_text = substr($td, 4, strlen($td) - 9);
+			$th_text = $th->text();
+			$td_text = $td->text();
 			
 			// Udfyld variablerne
 			if ($th_text == "Tidspunkt:"){
-				$tidspunkt = trim($td_text);			    
+				$tidspunkt = lectioSantize($td_text);			    
 			}
 			else if ($th_text == "Hold:"){
 				$hold = lectioSantize($td->find('a', 0)->innertext); // Hold er altid et link, fjern det			    
@@ -155,21 +169,13 @@ function lectioParseActivity($url) {
 		$lektier_samlet = $lektier_samlet . $note;
 	}
     
-	// Print kun indholdet hvis der er lektier eller timen er aflyst
-	$txt = "";
-
-	if (strlen($lektier_samlet) > 0 || $status == 'Aflyst') {
-		    
-		// Tjek om timen er aflyst
-		if ($status == 'Aflyst'){
-			$txt = $txt . 'Aflyst ';		    
-		}
-		
-		$txt = $txt . 'Hold: ' . $hold . ' Tidspunkt: ' . $tidspunkt;
-		$txt = $txt . 'Lektier: ' . $lektier_samlet;
-	}
-    
-    return $txt;
+	
+	return array(
+        'status'=>$status,
+        'time'=>$tidspunkt,
+        'homework'=>$lektier_samlet,
+        'class'=>$hold
+            );
 }
 
 /*

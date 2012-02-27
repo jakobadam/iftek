@@ -117,8 +117,6 @@ function fbPost($user, $msg){
     
     $data = array('access_token'=>$user->access_token, 'message'=>utf8_encode($msg));
     
-    print_r($data);
-    die();
     $ch = curl_init();
 
     curl_setopt($ch,CURLOPT_URL, $user_feed_url);
