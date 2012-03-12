@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Håndterer indstillinger.
+ */
+
 require_once('base_controller.php');
 require_once('facebook.php');
 require_once('models/users.php');

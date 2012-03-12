@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Håndterer requests fra facebook efter login. 
+ */
+
 require("base_controller.php");
 require("facebook.php");
 require("models/users.php");

@@ -1,14 +1,13 @@
 <?php
 
 /**
- * Opdaterings job.
+ * Opdaterings job. 
  */
 
-print_r($_SERVER);
-die();
-require_once("conf/config.php");
-require_once("models/users.php");
-require_once("post.php");
+require_once('conf/config.php');
+require_once('models/users.php');
+require_once('lectio.php');
+require_once('facebook.php');
 
 $date = time();
 $tomorrow = $date + 24 * 3600;
@@ -30,9 +29,6 @@ if(count($activities) > 0){
     }
     
     $response = json_decode(fbPost($user, $txt));
-    
-    if(array_key_exists('error', $response)){
-        error_log($response->error);
-    }
+    echo($response);
 }
 ?>

@@ -15,7 +15,7 @@ require_once('conf/config.php');
 function getUser($id){
     $user = null;
     $path = DB_PATH . '/' . $id;
-    /* @ ignorerer advarslers */
+    /* @ ignorerer advarsler */
     $contents = @file_get_contents($path); 
     if($contents != null){
         $user = json_decode($contents);
@@ -44,7 +44,7 @@ function saveUser($user){
     $fh = fopen($path, 'w');
     
     if(!$fh){
-        echo "Could not open file: $path";
+        echo("Could not open file: $path");
         die();
     }
     fwrite($fh, json_encode($user));
