@@ -45,6 +45,15 @@
     </div>
 
     <footer{% if user %} class="user"{%endif%}>
+      <nav>
+        <ul>
+          {% if user %}
+          <li>
+            <a href="logout.php">log ud</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
       <p>
         © 2012 IFTEK. Powered by:
         <a href="http://www.cabo.dk/produkter/irigo-servers">

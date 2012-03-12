@@ -41,6 +41,7 @@ if(array_key_exists('user', $_SESSION)){
     }
     
     echo(render("activities.html", array(
+        'user'=>$user,
         'lectio_html'=>$txt, 
         'yesterday_url'=>$yesterday_url,
         'tomorrow_url'=>$tomorrow_url,
