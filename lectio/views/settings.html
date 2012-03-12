@@ -15,16 +15,23 @@
     </div>
 </form>
 
-<form method="post" class="well" action="activities.php">
+<form method="get" class="well" action="activities.php">
     <h2>Vis Lektier</h2>
     <button type="submit" class="btn btn-primary">Vis</button>
 </form>
 
-<form method="post" class="well" action="post.php">
-    <h2>Post dagens lektier på facebook</h2>
-    <button type="submit" class="btn btn-primary">Post</button>
-</form>
-
+<div class="well">
+    <h2>Opdaterings URL</h2>    
+    <textarea id="update_url" style="width:100%;height:60px;opacity:0;display:none">{{update_url}}</textarea>
+    <button id="show_update_url" class="btn btn-primary">Vis</button>
+</div>
+<script>
+    dojo.query('#show_update_url').onclick(function(){
+        var node = dojo.byId('update_url');
+        node.style.display = 'block';
+        dojo.fadeIn({node:node}).play(); 
+    });
+</script>
 {% else%}
 <a class="fbSignInButton" href="{{login_url}}">Login med Facebook</a>
 {% endif%}

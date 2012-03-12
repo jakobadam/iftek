@@ -3,9 +3,15 @@
 require_once("base_controller.php");
 require_once("facebook.php");
 require_once("lectio.php");
-
-if(array_key_exists('fbUser', $_SESSION)){
-    $user = $_SESSION['fbUser'];
+      
+if(array_key_exists('user', $_SESSION)){
+    $user = $_SESSION['user'];
+    
+    if(!array_key_exists('lectio_id', $user) || !$user->lectio_id){
+        flash('Du skal sætte dit lectio id!', 'errors');
+        header('Location: index.php');
+        die();
+    }
     
     if(!array_key_exists('date', $_GET)){
         $date = time();
@@ -23,6 +29,11 @@ if(array_key_exists('fbUser', $_SESSION)){
 
     // Parse lectio og print lektier og aflyste timer
     $activities = lectioGetActivities($user->lectio_id, $date);
+    if(count($activities) == 0){
+        flash('Der er ingen lektier idag!');
+        header('Location: index.php');
+        die();
+    }
 
     $txt = '';
     foreach($activities as $activity){
@@ -33,6 +44,7 @@ if(array_key_exists('fbUser', $_SESSION)){
         'lectio_html'=>$txt, 
         'yesterday_url'=>$yesterday_url,
         'tomorrow_url'=>$tomorrow_url,
+        'date'=>$date,
         'human_date'=>$human_date
     )));
 }

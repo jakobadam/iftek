@@ -6,7 +6,7 @@ require_once('base_controller.php');
 header('Content-Type: text/html; charset=utf-8');
 
 require_once('test/test_lectio.php');
-require_once('test/test_facebook.php');
+require_once('test/test_users.php');
 
 
 ?>

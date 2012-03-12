@@ -4,14 +4,18 @@
 
 {% block body %}
 
-<form method="post" class="well" action="">
+<div class="well">
     <div style="text-align:right">
-        <a href={{yesterday_url}}>&laquo;</a>
+        <a href={{yesterday_url}}>&laquo; dagen før</a>
         &nbsp;&nbsp;&nbsp;
-        <a href="{{tomorrow_url}}">&raquo;</a>      
+        <a href="{{tomorrow_url}}">dagen efter &raquo;</a>      
     </div>
     <h2>Lektier ({{human_date}})</h2>
     {{lectio_html|raw}}
+</div> 
+
+<form method="post" class="well" action="post.php?date={{date}}">
+    <button type="submit" class="btn btn-primary">Post til Facebook</button>
 </form>
 
 {% endblock %}

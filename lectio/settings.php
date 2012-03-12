@@ -1,13 +1,14 @@
 <?php
 
-require_once("base_controller.php");
-require_once("facebook.php");
+require_once('base_controller.php');
+require_once('facebook.php');
+require_once('models/users.php');
 
 $context = array();
 $user = null;
 
-if(array_key_exists('fbUser', $_SESSION)){
-    $user = $_SESSION['fbUser'];
+if(array_key_exists('user', $_SESSION)){
+    $user = $_SESSION['user'];
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -16,7 +17,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         die();
     }
     $user->lectio_id = $_POST['lectio_id'];
-    fbSaveUser($user);
+    saveUser($user);
 
     flash('Indstillinger opdateret!');
     header('Location: index.php');
@@ -25,6 +26,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 else{
     $context['user'] = $user;
     $context['login_url'] = fbGetLoginURL(); 
+    $context['update_url'] = 'http://' 
+        . $_SERVER['SERVER_NAME']
+        . dirname($_SERVER['REQUEST_URI']) 
+        . '/update.php?user_id=' . $user->id 
+        . '&access_token=' . $user->access_token;
     echo(render("settings.html", $context));
 }
 ?>

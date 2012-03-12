@@ -14,10 +14,6 @@ function fbGetUser($access_token){
     return $user;
 }
 
-function fbIsLoggedIn(){
-    return isset($_SESSION['fbUser']);
-}
-
 function fbGetLoginURL(){    
     // CSRF protection
     // http://en.wikipedia.org/wiki/Cross-site_request_forgery    
@@ -64,44 +60,6 @@ function fbGetAccessToken($code){
     return $params['access_token'];
 }
 
-function fbGetOrCreateLocalUser($access_token){
-    $fb_user = fbGetUser($access_token);
-    $user = fbGetLocalUser($fb_user->id);
-    if($user == null){
-        $fb_user->access_token = $access_token;
-        fbSaveUser($fb_user);
-        $user = $fb_user;
-    }
-    return $user;
-}
-
-function fbGetLocalUser($id){
-    $user; 
-    $path = DB_PATH . '/' . $id;
-    $contents = file_get_contents($path);
-    if($contents != null){
-        $user = json_decode($contents);
-    }
-    return $user;
-}
-
-/**
- * Gem brugeren lokalt.
- * 
- * @param $user brugeren der skal gemmes.
- */
-function fbSaveUser($user){
-    $file_name = $user->id;
-    $path = DB_PATH . '/' . $file_name;
-    $fh = fopen($path, 'w');
-    
-    if(!$fh){
-        echo "Could not open file: $path";
-        die();
-    }
-    fwrite($fh, json_encode($user));
-    fclose($fh);
-}
 
 /**
  * Post besked til brugers væg.
@@ -115,7 +73,7 @@ function fbPost($user, $msg){
     
     $user_feed_url = 'https://graph.facebook.com/' . $user->id . '/feed' . '?app_id=' . APP_ID;
     
-    $data = array('access_token'=>$user->access_token, 'message'=>utf8_encode($msg));
+    $data = array('access_token'=>$user->access_token, 'message'=>$msg);
     
     $ch = curl_init();
 

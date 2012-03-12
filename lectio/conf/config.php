@@ -1,8 +1,10 @@
 <?php
     
-    define('APP_ID', '150320061738871');
-    define('APP_SECRET', 'f41e741eed4c053550c5c7cfddfc54ce');
-    define('APP_REDIRECT_URL', 'http://skyen.iftek.dk/~jakob/lectio/auth.php');
+    define('APP_ID', '');
+    define('APP_SECRET', '');
+    
+    // URLen som facebook giver os adgangs token via
+    define('APP_REDIRECT_URL', '');
     define('DB_PATH', 'db');
     
     // publish_stream: Adgang til at indsætte indhold i fb stream
