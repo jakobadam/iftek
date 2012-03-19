@@ -10,7 +10,7 @@ require_once('models/users.php');
 
 $context = array();
 $user = null;
-
+    
 if(array_key_exists('user', $_SESSION)){
     $user = $_SESSION['user'];
 }
@@ -32,9 +32,9 @@ else{
         $context['user'] = $user;
         $context['update_url'] = 'http://' 
         . $_SERVER['SERVER_NAME']
-        . dirname($_SERVER['REQUEST_URI']) 
+        . dirname($_SERVER['SCRIPT_NAME']) 
         . '/update.php?user_id=' . $user->id 
-        . '&access_token=' . $user->access_token;    
+        . '&access_token=' . $user->access_token;
     }
     else{
         $context['login_url'] = fbGetLoginURL();     
