@@ -6,7 +6,7 @@ function lectioGetSchemaURL($student_id, $date){
     // Udregn ugenummer og år. Fx uge 7 år 2012
     // er 072012
     $week_year = lectioGetWeekYear($date);
-    return 'https://www.lectio.dk/lectio/256/SkemaNy.aspx?type=elev&elevid=' . $student_id . '&week=' . $week_year;
+    return 'http://www.lectio.dk/lectio/256/SkemaNy.aspx?type=elev&elevid=' . $student_id . '&week=' . $week_year;
 }
 
 function lectioGetSchema($student_id, $date){    
@@ -36,42 +36,45 @@ function lectioGetActivities($student_id, $date=null) {
 	// Colonne 4: Torsdag
 	// Colonne 5: Fredag
 	
-  	$html = lectioGetSchema($student_id, $date); 
-	
-	// Find skemaet - en tabel med css class = s2skema
-	$skema = $html->find('.s2skema', 0); // 0 betyder at vi kun ønsker, at finde første element med class = s2skema
-	
-	// Gennemløb alle rækker i tabellen (<tr> tags)
 	$parsed_activities = array();
-	foreach($skema->find('tr') as $tr) {
-		
-		// Index så vi kan styre, hvilken celle vi arbejder med.
-		// Er det celle 1 = mandag, celle 5 = fredag osv.
-		$td_index = 0;
-		
-		// For hver række gennemløb dens celler (<td> tags)
-		foreach($tr->find('td') as $td) {
-					
-			// Medtag kun colonner, der gælder for den korrekte dag. Fx er $td_index 1 = mandag
-			if ($td_index == $day_of_week) {
-				
-				// Find alle links (<a> tags) i cellen. De linker til de forskellige timer
-				foreach($td->find('a') as $link) {
-					
-					// Tjek om <a> tagget har en href (link)
-					if ($link->href != null) {
-                        
-                        // Hent siden
-                        $html = file_get_html('https://www.lectio.dk' . $link->href);
-						array_push($parsed_activities, lectioParseActivity($html));
-					}
-				}
-			}
-			
-			// Tæl index op
-			$td_index++;
-		}	
-	}
+  	$html = lectioGetSchema($student_id, $date);
+    
+    if($html){
+    	// Find skemaet - en tabel med css class = s2skema
+    	$skema = $html->find('.s2skema', 0); // 0 betyder at vi kun ønsker, at finde første element med class = s2skema
+    	
+    	// Gennemløb alle rækker i tabellen (<tr> tags)
+    	foreach($skema->find('tr') as $tr) {
+    		
+    		// Index så vi kan styre, hvilken celle vi arbejder med.
+    		// Er det celle 1 = mandag, celle 5 = fredag osv.
+    		$td_index = 0;
+    		
+    		// For hver række gennemløb dens celler (<td> tags)
+    		foreach($tr->find('td') as $td) {
+    					
+    			// Medtag kun colonner, der gælder for den korrekte dag. Fx er $td_index 1 = mandag
+    			if ($td_index == $day_of_week) {
+    				
+    				// Find alle links (<a> tags) i cellen. De linker til de forskellige timer
+    				foreach($td->find('a') as $link) {
+    					
+    					// Tjek om <a> tagget har en href (link)
+    					if ($link->href != null) {
+                            
+                            // Hent siden
+                            $html = file_get_html('https://www.lectio.dk' . $link->href);
+    						array_push($parsed_activities, lectioParseActivity($html));
+    					}
+    				}
+    			}
+    			
+    			// Tæl index op
+    			$td_index++;
+    		}	
+    	}
+        
+    }
 
     return $parsed_activities;
 }
