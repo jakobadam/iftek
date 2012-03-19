@@ -10,6 +10,9 @@ require_once('lectio.php');
 require_once('facebook.php');
 
 $date = time();
+
+// ikke brugt nu, men kunne bruges til at hente lektier for
+// i morgen.
 $tomorrow = $date + 24 * 3600;
 
 $user = getUser($_GET['user_id']);
@@ -25,10 +28,15 @@ $activities = lectioGetActivities($user->lectio_id, $date);
 if(count($activities) > 0){
     $txt = '';
     foreach($activities as $activity){
-        $txt = $txt . $activity['class'] . ' ' . $activity['time'] . ' ' . $activity['homework'] . '.';
+        if($activity['status'] == 'aflyst'){
+            // post til facebook
+            $response = fbPost($user, $activity['class'] . ' er aflyst');
+            // udskriv resultatet
+            echo($response);    
+        }
     }
-    
-    $response = json_decode(fbPost($user, $txt));
-    echo($response);
+}
+else{
+    echo('Ingen lektier!');
 }
 ?>
