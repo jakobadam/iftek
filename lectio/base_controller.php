@@ -35,10 +35,6 @@ function get_error_flashes(){
  * som vi har brug for hver gang.
  */
 function populate_context($context){
-	if(is_logged_in()){
-	 	$user = User::get($_SESSION['user_id']);
-	 	$context['user'] = $user;
-	}
 	$context['messages'] = get_flashes();
 	$context['errors'] = get_error_flashes();
 	return $context;
@@ -57,11 +53,8 @@ function login_required(){
 }
 
 function is_logged_in(){
-    if(array_key_exists('user_email', $_SESSION) && array_key_exists('user_id', $_SESSION)){
-        $user = User::get($_SESSION['user_id']);
-        if($user && $user->email == $_SESSION['user_email']){
+    if(array_key_exists('user', $_SESSION)){
             return true;
-        }
     }
     return false;
 }
