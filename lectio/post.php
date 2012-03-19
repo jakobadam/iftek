@@ -8,7 +8,7 @@ require_once("base_controller.php");
 require_once("facebook.php");
 require_once("lectio.php");
 
-function post(){
+function post($user){
     if(!array_key_exists('date', $_GET)){
         $date = time();
     }
@@ -44,7 +44,7 @@ if(array_key_exists('user', $_SESSION)){
     $user = $_SESSION['user'];
     
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        post();    
+        post($user);    
         // send brugeren tilbage til hvor han kom fra
         header('Location: '. $_SERVER['HTTP_REFERER']);
         die();    
