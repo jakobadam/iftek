@@ -27,17 +27,17 @@ if(array_key_exists('user', $_SESSION)){
     $tomorrow_url = 'activities.php?date=' . $tomorrow;
     $human_date = strftime('%d-%m-%Y', $date);
 
-    // Parse lectio og print lektier og aflyste timer
+    // Parse lectio og print lektier og aflyste timer    
     $activities = lectioGetActivities($user->lectio_id, $date);
+    $txt = '';
+    
     if(count($activities) == 0){
         flash('Der er ingen lektier idag!');
-        header('Location: index.php');
-        die();
-    }
-
-    $txt = '';
-    foreach($activities as $activity){
-        $txt = $txt . $activity['class'] . ' ' . $activity['time'] . ' ' . $activity['homework'] . '.';
+    }    
+    else{
+        foreach($activities as $activity){
+            $txt = $txt . $activity['class'] . ' ' . $activity['time'] . ' ' . $activity['homework'] . '.';
+        }
     }
     
     echo(render("activities.html", array(
