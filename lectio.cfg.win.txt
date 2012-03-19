@@ -6,7 +6,7 @@ option confirm off
 open Brugernavn:Kodeord@skyen.iftek.dk:22
 #################################
 
-lcd blog
+lcd lectio
 
 cd public_html
 cd lectio
@@ -16,6 +16,7 @@ option transfer binary
 synchronize remote -delete
 synchronize local
 
+chmod 777 db
 
 close
 exit
