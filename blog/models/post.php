@@ -97,6 +97,18 @@ class Post extends Model{
             die('Blog indlæg kunne ikke opdateres: ' . mysql_error());
         }
     }
+
+    /**
+    * Slet et eksisterende blog indlæg.
+    */
+    static function delete($post){
+        $stm = parent::prepare("DELETE FROM posts WHERE id = ?");
+        $stm->execute(array($post->id));
+        
+        if(!$stm){
+            die('Blog indlæg kunne ikke slettes: ' . mysql_error());
+        }
+    }
     
     /**
      * Hent en liste med alle blog posts i databasen
