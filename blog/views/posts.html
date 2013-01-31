@@ -14,10 +14,10 @@
 {% for post in posts %}
     <section>
         <h3>
-            <a href="{{ post.url }}">{{ post.title }}</a>
+            <a href="post.php?id={{ post.id }}">{{ post.title }}</a>
         </h3>
         {% if user%}
-            <a href="{{ post.edit_url}}">[rediger]</a>
+            <a href="edit_post.php?id={{ post.id }}">[rediger]</a>
         {% endif %}
         <div class="blog-meta">
         {% if not post.is_published %}

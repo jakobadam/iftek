@@ -6,7 +6,7 @@
     <article>
         <h1>{{ post.title }}</h1>
         {% if user %}
-            <a href="{{ post.edit_url}}">[rediger]</a>
+            <a href="edit_post.php?id={{ post.id}}">[rediger]</a>
         {% endif %}
         <div class="blog-meta">Oprettet af <span>{{ post.user.name }} d. {{ post.created_at|date }}</span></div>
         <div>

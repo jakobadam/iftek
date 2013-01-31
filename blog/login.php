@@ -1,24 +1,43 @@
 <?php
 
 require_once("base_controller.php");
-require_once("forms/login_form.php");
-require_once("models/user.php");
+include_once("models/db.php");
 
-$form = new LoginForm($_POST);
+function validate_on_submit(){
+    if($_SERVER['REQUEST_METHOD'] == 'POST') {
+       if(empty($_POST['email'])){
+           echo "Email skal udfyldes";
+           die();
+       }
 
-if($form->validate_on_submit()){
+       if(empty($_POST['password'])){
+           echo "Password skal udfyldes";
+           die();
+       }
+       
+       return true;
+    }
+    return false;
+}
+
+if(validate_on_submit()){
 
     // FIXME: get_user(...)
-    $user = User::get_by_email_and_password($form->email->value, $form->password->value);
-	
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    
+	$sql = "SELECT * FROM users WHERE email = ? and password = ? LIMIT 1";
+
+    $user = db_query($sql, array($email, $password));
+		
 	if(!$user){
 	    flash_error('Kunne ikke logge ind!');
 	 	echo(render("login_form.html"));
 		die();
 	}
 
-	$_SESSION['user_email'] = $user->email;
-	$_SESSION['user_id'] = $user->id;
+	$_SESSION['user_email'] = $user['email'];
+	$_SESSION['user_id'] = $user['id'];
 
 	flash('Velkommen tilbage!');
 	header('Location: posts.php');
@@ -26,6 +45,6 @@ if($form->validate_on_submit()){
 	
 }
 
-echo(render("login_form.html", array(form=>$form)));
+echo(render("login_form.html"));
 
 ?>

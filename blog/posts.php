@@ -1,22 +1,13 @@
 <?php
 
 require_once ("base_controller.php");
-require_once ("models/post.php");
-
-// Version uden paginering, dvs. alle posts vises på siden.
-// if(is_logged_in()){
-// $posts = Post_DAO::all();
-// }
-// else{
-// $posts = Post_DAO::all("WHERE is_published = 1");
-// }
-// echo(render("posts.html", array('posts'=>$posts)));
+require_once ("models/db.php");
 
 $PAGE_SIZE = 10;
 $LIMIT = $PAGE_SIZE + 1;
 
 $offset = null;
-if(array_key_exists('offset', $_GET)){
+if(isset($_GET['offset'])){
     $offset = $_GET['offset'];
 }
 
@@ -24,31 +15,44 @@ $posts = null;
 $prev_posts = null;
 $next_url = null;
 $prev_url = null;
-$published_only = !is_logged_in();
+// Vis kun ikke publiserede posts hvis brugeren er logget ind.
+$show_published_only = !is_logged_in();
 
-if($offset != null) { 
+if($offset == null) {
+    $sql = "SELECT * from posts";
+    if($show_published_only){
+        $sql = $sql . " WHERE is_published = 1";
+    }
+    $sql = $sql . " ORDER BY id DESC LIMIT " . $LIMIT;
+    $posts = db_query($sql);
+} else {
 
-    // Vis kun ikke publiserede posts hvis brugeren er logget ind.
-    
     // Det seneste blog posts har det højeste id.
     // Derfor hentes posts sorteret faldende (DESC af engelsk descending) efter id.
-    
+
     // Eksempel: 6 posts, sidestørrelse 2
     // [[5,4],[3,2],[1,0]]
 
     // Antag at vi er på side 2 dvs. [3,2]
     // Der skal linkes til den næste side hvis der findes et tredje element, derfor hentes der (PAGE_SIZE + 1) elementer.
-    
-    $posts = Post::all_lte($offset, array('order'=>'DESC', 'published_only'=>$published_only, 'limit'=>$LIMIT));
- 
-    // Denne bruges til at vurderer om der findes en foregående side, og hvad URLen skal være.
-    $prev_posts = Post::all_gt($offset, array('order'=>'ASC', 'published_only'=>$published_only, 'limit'=>$PAGE_SIZE));
-    
-} else {
-    $posts = Post::all(array('order'=>'DESC', 'published_only'=>$published_only, 'limit'=>$LIMIT));
+    $sql = "SELECT * FROM posts WHERE ";
+    if($show_published_only){
+        $sql = $sql . "is_published = 1";
+    }
+    $sql = $sql . "AND id <= :id ORDER BY id DESC LIMIT :limit";
+    $posts = db_query($sql, array('id'=>$id, 'limit'=>$limit));
+
+    // Denne bruges til at vurderer om der findes en foregående side,
+    // og hvad URLen skal være.
+    $sql = "SELECT * from posts WHERE ";
+    if($show_published_only){
+        $sql = $sql . "is_published = 1 ";
+    }
+    $sql = $sql . "AND id > :id ORDER BY id DESC LIMIT 1";
+    $prev_posts = db_query($sql, array('id'=>$id));
 }
 
-// For at paginere hentes der PAGE_SIZE + 1 posts. 
+// For at paginere hentes der PAGE_SIZE + 1 posts.
 // Hvis det sidste element eksisterer skal der pagineres.
 if(count($posts) > $PAGE_SIZE) {
     // det er det sidste element vi skal fortsætte fra

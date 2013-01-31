@@ -1,7 +1,7 @@
 <?php
 
 require_once('libs/Twig/Autoloader.php');
-require_once('models/user.php');
+require_once('models/db.php');
 
 Twig_Autoloader::register();
 
@@ -37,7 +37,9 @@ function get_error_flashes(){
  */
 function populate_context($context){
 	if(is_logged_in()){
-	 	$user = User::get($_SESSION['user_id']);
+	 	$sql = "SELECT * FROM users WHERE id = ?";
+		$user = db_query($sql, array(intval($_SESSION['user_id'])));
+	 	
 	 	$context['user'] = $user;
 	}
 	$context['messages'] = get_flashes();
@@ -59,8 +61,10 @@ function login_required(){
 
 function is_logged_in(){
     if(array_key_exists('user_email', $_SESSION) && array_key_exists('user_id', $_SESSION)){
-        $user = User::get($_SESSION['user_id']);
-        if($user && $user->email == $_SESSION['user_email']){
+        $sql = "SELECT * FROM users WHERE id = ?";
+		$user = db_query($sql, array(intval($_SESSION['user_id'])));
+		
+        if($user && $user['email'] == $_SESSION['user_email']){
             return true;
         }
     }

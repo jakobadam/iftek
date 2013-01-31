@@ -1,9 +1,12 @@
 <?php
 
 require_once("base_controller.php");
-require_once("models/post.php");
+require_once("models/db.php");
 
-$post = Post::get(intval($_GET['id']));
+$id = intval($_GET['id']);
+$sql = "SELECT * FROM posts WHERE id = ?";
+$post = db_query($sql, array($id));
+
 if(!$post){
     flash_error('Det post findes ikke!');
     header('Location: posts.php');
