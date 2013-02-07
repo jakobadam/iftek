@@ -1,8 +1,7 @@
 <?php
 
-require_once "base_controller.php";
-require_once "forms/post_form.php";
-require_once "models/db.php";
+require_once "controller.php";
+require_once "db.php";
 
 login_required();
 
