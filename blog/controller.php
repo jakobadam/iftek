@@ -1,7 +1,7 @@
 <?php
 
 require_once('libs/Twig/Autoloader.php');
-require_once('models/db.php');
+require_once('db.php');
 
 Twig_Autoloader::register();
 
@@ -60,11 +60,12 @@ function login_required(){
 }
 
 function is_logged_in(){
-    if(array_key_exists('user_email', $_SESSION) && array_key_exists('user_id', $_SESSION)){
+    if(array_key_exists('username', $_SESSION) && array_key_exists('user_id', $_SESSION)){
         $sql = "SELECT * FROM users WHERE id = ?";
-		$user = db_query($sql, array(intval($_SESSION['user_id'])));
+		$user = db_query_get($sql, array(intval($_SESSION['user_id'])));
 		
-        if($user && $user['email'] == $_SESSION['user_email']){
+		/* TODO: change db from email to username*/
+        if($user && $user['email'] == $_SESSION['username']){
             return true;
         }
     }
