@@ -3,7 +3,7 @@
 require_once("base_controller.php");
 require_once("models/db.php");
 
-$id = intval($_GET['id']);
+$id = $_GET['id'];
 $sql = "SELECT * FROM posts WHERE id = ?";
 $post = db_query($sql, array($id));
 
