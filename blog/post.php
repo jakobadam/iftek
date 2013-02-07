@@ -13,6 +13,8 @@ if(!$post){
     die();
 } 
 
-echo(render("post.html", array('post'=>$post)));
+$author = db_query_get("SELECT * FROM users WHERE id = ?", array($post['user_id']));
+
+echo(render("post.html", array('post'=>$post, 'author'=>$author)));
 
 ?>
