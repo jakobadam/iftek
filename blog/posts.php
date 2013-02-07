@@ -1,7 +1,7 @@
 <?php
 
-require_once ("base_controller.php");
-require_once ("models/db.php");
+require_once("controller.php");
+require_once("db.php");
 
 $PAGE_SIZE = 10;
 $LIMIT = $PAGE_SIZE + 1;

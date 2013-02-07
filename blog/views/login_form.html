@@ -5,13 +5,11 @@
 {% block body %}
 <h1>Login</h1>
 <form method="post" action="login.php">
-  <label>Email</label>
-  <input type="textbox" id="email" name="email" value="{{form.email.value}}" />
-  {{form.email.errors_as_html|raw}}
+  <label>Brugernavn</label>
+  <input type="textbox" id="email" name="email" />
   
   <label>Kodeord</label>
   <input id="password" name="password" type="password" />
-  {{form.password.errors_as_html|raw}}
   
   <input type="submit" value="Login" />
 

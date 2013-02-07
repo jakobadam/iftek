@@ -1,6 +1,6 @@
 <?php
 
-include_once("base_controller.php");
+require_once("controller.php");
 
 session_destroy();
 header('Location: posts.php');

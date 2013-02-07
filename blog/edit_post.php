@@ -1,8 +1,7 @@
 <?php
 
-require_once "base_controller.php";
-require_once "forms/post_form.php";
-require_once("models/db.php");
+require_once("controller.php");
+require_once("db.php");
 
 login_required();
 
@@ -40,7 +39,7 @@ function clean(){
 }
 
 
-$post = db_query("SELECT * FROM posts WHERE id = :id", array('id'=>$id));
+$post = db_query_get("SELECT * FROM posts WHERE id = :id", array('id'=>$id));
 
 if(!$post){
     flash_error('Det post findes ikke!');

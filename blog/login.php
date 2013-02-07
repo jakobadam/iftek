@@ -1,7 +1,7 @@
 <?php
 
-require_once("base_controller.php");
-include_once("models/db.php");
+require_once("controller.php");
+require_once("db.php");
 
 function validate_on_submit(){
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -22,13 +22,12 @@ function validate_on_submit(){
 
 if(validate_on_submit()){
 
-    // FIXME: get_user(...)
     $email = $_POST['email'];
     $password = $_POST['password'];
     
 	$sql = "SELECT * FROM users WHERE email = ? and password = ? LIMIT 1";
 
-    $user = db_query($sql, array($email, $password));
+    $user = db_query_get($sql, array($email, $password));
 		
 	if(!$user){
 	    flash_error('Kunne ikke logge ind!');
