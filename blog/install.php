@@ -36,9 +36,9 @@ function validate_on_submit(){
     return false;
 }
 
-$users = db_query("SELECT * FROM users");
+$user = db_query_get("SELECT * FROM users");
 
-if(count($users) == 0){
+if($user == null){
 
     if(validate_on_submit()){
         
