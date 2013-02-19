@@ -45,23 +45,13 @@ function db_query($query, $data=array()){
     $stm->setFetchMode(PDO::FETCH_ASSOC);
     $stm->execute($data);
 
-    if(strtoupper(substr($stm->queryString, 0, 6)) == 'SELECT'){
-        $results = array();
-        while($row = $stm->fetch()) {
-            array_push($results, $row);
-        }
-        return $results;
-    }
     // PDO stm kan der itereres med.
     return $stm;
 }
 
 function db_query_get($query, $data=array()){
-	$results = db_query($query, $data);
-	if(count($results) == 1){
-		return $results[0];
-	}
-	return $results;
+	$stm = db_query($query, $data);
+	return $stm->fetch();
 }
 
 /**
