@@ -35,7 +35,8 @@ if(validate_on_submit()){
 		die();
 	}
 
-	$_SESSION['user_email'] = $user['email'];
+	// TODO: change email -> username
+	$_SESSION['username'] = $user['email'];
 	$_SESSION['user_id'] = $user['id'];
 
 	flash('Velkommen tilbage!');
