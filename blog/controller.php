@@ -38,7 +38,7 @@ function get_error_flashes(){
 function populate_context($context){
 	if(is_logged_in()){
 	 	$sql = "SELECT * FROM users WHERE id = ?";
-		$user = db_query($sql, array(intval($_SESSION['user_id'])));
+		$user = db_query_get($sql, array(intval($_SESSION['user_id'])));
 	 	
 	 	$context['user'] = $user;
 	}
