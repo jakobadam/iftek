@@ -1,8 +1,8 @@
 <?php    
     define('DB_URL', 'localhost');
-    define('DB_USER', ''); // indsæt brugernavn mellem ''
-    define('DB_PWD', ''); // indsæt koden mellem ''
-    define('DB_NAME', 'brugernavn.blog'); // ændre brugernavn
+    define('DB_USER', 'dit_brugernavn'); // indsæt brugernavn mellem ''
+    define('DB_PWD', 'dit_password'); // indsæt koden mellem ''
+    define('DB_NAME', 'dit_brugernavn.blog'); // ændre brugernavn
 
     if(DB_USER == '' || DB_PWD == '' || DB_NAME == ''){
         header('Content-type: text/html; charset=utf-8');
