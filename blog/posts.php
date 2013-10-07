@@ -24,7 +24,7 @@ if($offset == null) {
         $sql = $sql . " WHERE is_published = 1";
     }
     $sql = $sql . " ORDER BY id DESC LIMIT " . $LIMIT;
-    $posts = db_query($sql);
+    $posts = db_query($sql)->fetchAll();
 } else {
 
     // Det seneste blog posts har det højeste id.
@@ -37,33 +37,40 @@ if($offset == null) {
     // Der skal linkes til den næste side hvis der findes et tredje element, derfor hentes der (PAGE_SIZE + 1) elementer.
     $sql = "SELECT * FROM posts WHERE ";
     if($show_published_only){
-        $sql = $sql . "is_published = 1";
+        $sql = $sql . "is_published = 1 AND ";
     }
-    $sql = $sql . "AND id <= :id ORDER BY id DESC LIMIT :limit";
-    $posts = db_query($sql, array('id'=>$id, 'limit'=>$limit));
+    $sql = $sql . "id <= :id ORDER BY id DESC LIMIT " . $LIMIT;
+    $posts = db_query($sql, array('id'=>$offset))->fetchAll();
 
     // Denne bruges til at vurderer om der findes en foregående side,
     // og hvad URLen skal være.
     $sql = "SELECT * from posts WHERE ";
     if($show_published_only){
-        $sql = $sql . "is_published = 1 ";
+        $sql = $sql . "is_published = 1 AND ";
     }
-    $sql = $sql . "AND id > :id ORDER BY id DESC LIMIT 1";
-    $prev_posts = db_query($sql, array('id'=>$id));
+    $sql = $sql . "id > :id ORDER BY id ASC LIMIT " . $PAGE_SIZE;
+    $prev_posts = db_query($sql, array('id'=>$offset))->fetchAll();
 }
 
 // For at paginere hentes der PAGE_SIZE + 1 posts.
 // Hvis det sidste element eksisterer skal der pagineres.
 if(count($posts) > $PAGE_SIZE) {
     // det er det sidste element vi skal fortsætte fra
-    $next_id = $posts[count($posts) - 1] -> id;
+    $next_post = $posts[count($posts) - 1];
+    $next_id = $next_post['id'];
     $next_url = "posts.php?offset=$next_id";
+
+    // fjern det sidste (+1) element igen
     $posts = array_slice($posts, 0, -1);
 }
 
 if($prev_posts != null) {
-    // det er det første element vi skal fortsætte fra
-    $prev_id = $prev_posts[0] -> id;
+    // posts er sorteret stigende her
+    // fx hvis offset er 3 så hentes [[4,5]]
+
+    // det er det sidste element 5 vi skal bruge 
+    $prev_post = $prev_posts[count($prev_posts) - 1];
+    $prev_id = $prev_post['id'];
     $prev_url = "posts.php?offset=$prev_id";
 }
 

@@ -49,6 +49,9 @@ function db_query($query, $data=array()){
     return $stm;
 }
 
+/** 
+ * Hent en enkelt række fra databaseb.
+ */
 function db_query_get($query, $data=array()){
 	$stm = db_query($query, $data);
 	return $stm->fetch();
